@@ -996,40 +996,70 @@ export default function App() {
                 <p>Married to Smti. Kevizenuo, and a father of three, he has balanced his personal life with the immense responsibilities of statecraft. A leader who rose through the ranks, he has served in various capacities — from a Minister of State to the Chief Minister of Nagaland twice.</p>
               </div>
             </div>
+            {/* ── KEY INFORMATION: Dark table-style row panel ── */}
             <div className="max-w-5xl w-full reveal-on-scroll">
-              <div className="premium-3d-card p-8" style={{ border:"1px solid var(--border)", boxShadow:"0 20px 60px var(--shadow)" }}>
-                <h3 className="font-anton text-2xl mb-8 pb-4 text-center text-[var(--text-primary)] border-b" style={{ borderColor:"var(--border)" }}>Key Information</h3>
-                <ul className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                  {[
-                    { icon: <Calendar size={24} />, label: 'Born', value: 'February 21, 1952', id: 'info-born' },
-                    { icon: <MapPin size={24} />, label: 'Constituency', value: 'Peren, Nagaland', id: 'info-constituency' },
-                    { icon: <Shield size={24} />, label: 'Party', value: 'NPF', id: 'info-party' },
-                    { icon: <GraduationCap size={24} />, label: 'Education', value: 'B.A. Kohima College', id: 'info-education' },
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 cursor-pointer group premium-3d-card p-2" onClick={() => openSubpage(item.id)}>
-                      <div className="w-7 h-7 bg-[var(--bg-accent)] rounded-lg flex items-center justify-center text-[var(--accent-gold)] shrink-0 group-hover:bg-[var(--accent-gold)] group-hover:text-white transition-colors icon-accent" style={{ fontSize: '14px' }}>{item.icon}</div>
-                      <div className="flex items-baseline gap-1 min-w-0">
-                        <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-bold font-poppins shrink-0">{item.label}:</p>
-                        <p className="text-xs font-semibold text-[var(--text-primary)] font-poppins truncate group-hover:text-[var(--accent-gold)] transition-colors">{item.value}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+              <div style={{ borderRadius:'4px 20px 4px 20px', overflow:'hidden', boxShadow:'0 24px 80px rgba(0,0,0,0.35)', border:'1px solid rgba(255,255,255,0.06)' }}>
+                {/* Header bar */}
+                <div style={{ background:'linear-gradient(90deg, #0a1628 0%, #0d2044 100%)', padding:'1rem 2rem', display:'flex', alignItems:'center', gap:'0.75rem', borderBottom:'2px solid #b8913a' }}>
+                  <div style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#c9a84c' }} />
+                  <div style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#c9a84c', opacity:0.5 }} />
+                  <div style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#c9a84c', opacity:0.25 }} />
+                  <h3 className="font-anton tracking-[0.25em] uppercase ml-3" style={{ fontSize:'0.7rem', color:'#b8913a', margin:0 }}>Biographical Profile</h3>
+                </div>
+                {/* Info rows */}
+                {[
+                  { icon: <Calendar size={14} />, label: 'Date of Birth', value: 'February 21, 1952', id: 'info-born', bg: 'var(--bg-accent)' },
+                  { icon: <MapPin size={14} />, label: 'Constituency', value: 'Tening, Peren District — Nagaland', id: 'info-constituency', bg: 'var(--bg-secondary)' },
+                  { icon: <Shield size={14} />, label: 'Political Party', value: "Naga People's Front (NPF)", id: 'info-party', bg: 'var(--bg-accent)' },
+                  { icon: <GraduationCap size={14} />, label: 'Education', value: 'Bachelor of Arts — Kohima College', id: 'info-education', bg: 'var(--bg-secondary)' },
+                ].map((item, i) => (
+                  <div key={i} onClick={() => openSubpage(item.id)} style={{
+                    background: item.bg,
+                    padding:'clamp(0.9rem,2vw,1.1rem) clamp(1rem,3vw,2rem)',
+                    display:'flex', alignItems:'center', gap:'clamp(0.75rem,2vw,1.5rem)',
+                    borderBottom: i < 3 ? '1px solid var(--border)' : 'none',
+                    cursor:'pointer', transition:'background 0.2s ease',
+                  }}
+                  onMouseEnter={e=>(e.currentTarget as HTMLElement).style.background='rgba(184,145,58,0.1)'}
+                  onMouseLeave={e=>(e.currentTarget as HTMLElement).style.background=item.bg}>
+                    <div style={{ width:'30px', height:'30px', borderRadius:'6px', background:'rgba(184,145,58,0.15)', border:'1px solid rgba(184,145,58,0.25)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                      <span style={{ color:'#c9a84c' }}>{item.icon}</span>
+                    </div>
+                    <span className="font-poppins uppercase" style={{ fontSize:'clamp(0.55rem,1.5vw,0.62rem)', color:'#c9a84c', letterSpacing:'0.12em', fontWeight:700, width:'clamp(80px,18vw,110px)', flexShrink:0 }}>{item.label}</span>
+                    <div style={{ width:'1px', height:'22px', background:'var(--border)', flexShrink:0 }} />
+                    <span className="font-poppins" style={{ fontSize:'clamp(0.75rem,2vw,0.9rem)', color:'var(--text-primary)', fontWeight:600, flex:1 }}>{item.value}</span>
+                    <span style={{ marginLeft:'auto', color:'rgba(201,168,76,0.5)', fontSize:'0.75rem', flexShrink:0 }}>→</span>
+                  </div>
+                ))}
               </div>
             </div>
+
+            {/* ── STAT COUNTERS: Each tile a different shape & color ── */}
             <div className="w-full reveal-on-scroll">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { target: 2, suffix: 'x', label: 'Chief Minister' },
-                  { target: 9, suffix: 'x', label: 'Elected Representative' },
-                  { target: 1, suffix: '', label: 'Rajya Sabha MP' },
-                  { target: 40, suffix: '+', label: 'Years in Politics' },
+                  { num:'2×',  label:'Chief\nMinister',       sub:'of Nagaland',         bg:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)', border:'#4a8fa8', shape:'2px 24px 2px 24px' },
+                  { num:'9×',  label:'Elected\nRepresentative', sub:'Consecutive terms', bg:'linear-gradient(135deg,#1a0a2e,#16213e,#0f3460)', border:'#6c63a8', shape:'24px 2px 24px 2px' },
+                  { num:'RS',  label:'Member of\nParliament',  sub:'Rajya Sabha',         bg:'linear-gradient(135deg,#1b2838,#2d4a22,#1a3a1a)', border:'#5a8a4a', shape:'2px 2px 24px 24px' },
+                  { num:'40+', label:'Years in\nService',     sub:'Unbroken dedication', bg:'linear-gradient(135deg,#2c1810,#4a2c1a,#2c1810)', border:'#b8913a', shape:'24px 24px 2px 2px' },
                 ].map((s, i) => (
-                  <div key={i} className="text-center p-6 premium-3d-card">
-                    <div className="w-16 h-16 rounded-full bg-white/25 flex items-center justify-center mx-auto mb-4 border border-white/40 icon-accent">
-                      <span className="font-anton text-2xl" style={{ color: 'var(--card-accent-dark)' }}>{s.target}{s.suffix}</span>
-                    </div>
-                    <p className="text-xs uppercase tracking-widest font-bold font-poppins">{s.label}</p>
+                  <div key={i} style={{
+                    background: s.bg,
+                    border: `1px solid ${s.border}40`,
+                    borderRadius: s.shape,
+                    padding:'clamp(1.25rem,3vw,2rem) clamp(0.75rem,2vw,1.25rem)',
+                    display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center', gap:'0.5rem',
+                    minHeight:'160px', position:'relative', overflow:'hidden',
+                    boxShadow:`0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)`,
+                    transition:'transform 0.3s ease, box-shadow 0.3s ease',
+                  }}
+                  onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(-6px)';(e.currentTarget as HTMLElement).style.boxShadow=`0 20px 50px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)`;}}
+                  onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(0)';(e.currentTarget as HTMLElement).style.boxShadow=`0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)`;}}>
+                    {/* Glow orb */}
+                    <div style={{ position:'absolute', bottom:'-20px', right:'-20px', width:'80px', height:'80px', borderRadius:'50%', background:`radial-gradient(circle, ${s.border}30, transparent 70%)`, pointerEvents:'none' }} />
+                    <span className="font-anton" style={{ fontSize:'clamp(2rem,6vw,3rem)', color:s.border, lineHeight:1, position:'relative' }}>{s.num}</span>
+                    <p className="font-anton uppercase tracking-widest" style={{ fontSize:'clamp(0.52rem,1.6vw,0.65rem)', color:'rgba(255,255,255,0.85)', margin:0, lineHeight:1.5, whiteSpace:'pre-line' }}>{s.label}</p>
+                    <p className="font-poppins" style={{ fontSize:'clamp(0.48rem,1.4vw,0.58rem)', color:'rgba(255,255,255,0.35)', margin:0 }}>{s.sub}</p>
                   </div>
                 ))}
               </div>
@@ -1207,15 +1237,39 @@ export default function App() {
             .vision-card-1.flip-visible { animation: flipInLeft  0.9s cubic-bezier(0.22,1,0.36,1) 0.25s forwards; }
             .vision-card-2.flip-visible { animation: flipInRight 0.9s cubic-bezier(0.22,1,0.36,1) 0.45s forwards; }
           `}</style>
-          <div className="grid md:grid-cols-3 gap-8 mb-20" id="vision-cards-grid">
+          <div className="grid md:grid-cols-3 gap-6 mb-20" id="vision-cards-grid">
             {[
-              { icon: <Shield size={32} />, title: 'Peace & Unity', desc: 'Committed to an amicable and lasting solution to the Naga political issue that respects Naga aspirations and ensures lasting peace.', subpageId: 'vision-peace' },
-              { icon: <Zap size={32} />, title: 'Development', desc: 'Championing road connectivity, healthcare, education, and economic growth across every district of Nagaland.', subpageId: 'vision-development' },
-              { icon: <Heart size={32} />, title: 'Youth & Future', desc: 'Empowering youth to be job creators, not job seekers. Fostering entrepreneurship, skill development, and self-reliance.', subpageId: 'vision-youth' },
+              {
+                icon: <Shield size={30} />, title: 'Peace & Unity',
+                desc: 'Committed to an amicable and lasting solution to the Naga political issue that respects Naga aspirations and ensures lasting peace.',
+                subpageId: 'vision-peace',
+                bg: 'linear-gradient(145deg, #0a1628 0%, #0d2347 50%, #112d5c 100%)',
+                accent: '#5b9bd5', accentDim: 'rgba(91,155,213,0.15)',
+                shape: '24px 24px 80px 24px',  /* bottom-right pulled out */
+                layout: 'center',
+              },
+              {
+                icon: <Zap size={30} />, title: 'Development',
+                desc: 'Championing road connectivity, healthcare, education, and economic growth across every district of Nagaland.',
+                subpageId: 'vision-development',
+                bg: 'linear-gradient(145deg, #1a0e00 0%, #2d1f00 50%, #3d2900 100%)',
+                accent: '#c9a84c', accentDim: 'rgba(201,168,76,0.15)',
+                shape: '80px 24px 24px 24px',  /* top-left pulled out */
+                layout: 'center',
+              },
+              {
+                icon: <Heart size={30} />, title: 'Youth & Future',
+                desc: 'Empowering youth to be job creators, not job seekers. Fostering entrepreneurship, skill development, and self-reliance.',
+                subpageId: 'vision-youth',
+                bg: 'linear-gradient(145deg, #06160d 0%, #0d2418 50%, #0f2c1c 100%)',
+                accent: '#4caf7d', accentDim: 'rgba(76,175,125,0.15)',
+                shape: '24px 80px 24px 24px',  /* top-right pulled out */
+                layout: 'center',
+              },
             ].map((pillar, index) => (
               <div
                 key={index}
-                className={`vision-card-${index} premium-3d-card p-10 text-center cursor-pointer`}
+                className={`vision-card-${index} cursor-pointer`}
                 ref={el => {
                   if (!el) return;
                   const obs = new IntersectionObserver(([entry]) => {
@@ -1223,26 +1277,46 @@ export default function App() {
                   }, { threshold: 0.15 });
                   obs.observe(el);
                 }}
-                onClick={() => openSubpage(pillar.subpageId)}>
-                <div className="w-16 h-16 rounded-full bg-white/25 flex items-center justify-center mx-auto mb-6 border border-white/40 icon-accent">
-                  <span style={{ color: 'var(--card-accent-dark)' }}>{pillar.icon}</span>
+                onClick={() => openSubpage(pillar.subpageId)}
+                style={{
+                  background: pillar.bg,
+                  borderRadius: pillar.shape,
+                  border: `1px solid ${pillar.accent}25`,
+                  padding: 'clamp(1.75rem,4vw,2.75rem)',
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: pillar.layout === 'center' ? 'center' : 'flex-start',
+                  textAlign: pillar.layout === 'center' ? 'center' : 'left',
+                  gap: '1.1rem', position: 'relative', overflow: 'hidden',
+                  boxShadow: `0 12px 50px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)`,
+                  transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease',
+                }}
+                onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(-8px) scale(1.01)';(e.currentTarget as HTMLElement).style.boxShadow=`0 30px 70px rgba(0,0,0,0.45), 0 0 0 1px ${pillar.accent}40`;}}
+                onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(0) scale(1)';(e.currentTarget as HTMLElement).style.boxShadow=`0 12px 50px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)`;}}>
+                {/* Large decorative bg letter */}
+                <div style={{ position:'absolute', bottom:'-1rem', right:'-1rem', width:'120px', height:'120px', borderRadius:'50%', background:`radial-gradient(circle, ${pillar.accent}12, transparent 70%)`, pointerEvents:'none' }} />
+                {/* Icon container */}
+                <div style={{ width:'56px', height:'56px', borderRadius: pillar.layout === 'center' ? '50%' : '14px', background: pillar.accentDim, border:`1.5px solid ${pillar.accent}40`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  <span style={{ color: pillar.accent }}>{pillar.icon}</span>
                 </div>
-                <h3 className="font-anton text-2xl mb-4 tracking-wide">{pillar.title}</h3>
-                <p className="font-poppins text-sm leading-relaxed opacity-90">{pillar.desc}</p>
-                <p className="font-poppins text-[10px] tracking-widest mt-6 border-t border-white/20 pt-4 uppercase hover:underline">TAP TO EXPLORE →</p>
+                <h3 className="font-anton tracking-wide" style={{ fontSize:'clamp(1.15rem,3vw,1.5rem)', color:'#f0ece4', margin:0 }}>{pillar.title}</h3>
+                <div style={{ width:'36px', height:'2px', background:`linear-gradient(90deg, ${pillar.accent}, transparent)`, borderRadius:'1px' }} />
+                <p className="font-poppins" style={{ fontSize:'clamp(0.78rem,2vw,0.88rem)', color:'rgba(220,215,205,0.7)', lineHeight:1.75, margin:0, flexGrow:1 }}>{pillar.desc}</p>
+                <div style={{ paddingTop:'0.85rem', borderTop:`1px solid rgba(255,255,255,0.06)`, width:'100%', display:'flex', alignItems:'center', justifyContent: pillar.layout === 'center' ? 'center' : 'space-between' }}>
+                  <span className="font-poppins uppercase tracking-widest" style={{ fontSize:'0.58rem', color: pillar.accent }}>Explore Policy →</span>
+                </div>
               </div>
             ))}
           </div>
           <div className="reveal-on-scroll reveal-fade">
-            <div className="max-w-4xl mx-auto px-8 py-4 text-center">
-              <h2 className="font-anton text-clamp-section leading-tight" style={{
-                background: 'linear-gradient(90deg, #ffffff 0%, #f59e0b 10%, #d4a843 18%, #4a90d9 28%, #8b5cf6 38%, #3a9e6a 48%, #c94060 58%, #d4732a 68%, #f59e0b 78%, #4a90d9 88%, #ffffff 100%)',
-                backgroundSize: '300% auto',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                animation: 'quoteColorFlow 8s ease infinite',
-              }}>"TOGETHER WE CAN BUILD A SOCIETY THAT IS STRONG, RESILIENT, JUST, INCLUSIVE AND PROSPEROUS."</h2>
+            <div style={{ maxWidth:'52rem', margin:'0 auto', position:'relative', padding:'2.5rem 3rem' }}>
+              {/* Large decorative quote mark */}
+              <span className="font-anton" style={{ position:'absolute', top:'-1rem', left:'1.5rem', fontSize:'6rem', color:'rgba(201,168,76,0.12)', lineHeight:1, pointerEvents:'none', userSelect:'none' }}>"</span>
+              <div style={{ borderLeft:'3px solid #c9a84c', paddingLeft:'2rem' }}>
+                <p className="font-poppins" style={{ fontSize:'0.65rem', color:'#c9a84c', letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:'0.75rem' }}>T.R. Zeliang — Deputy Chief Minister, Nagaland</p>
+                <h2 className="font-anton" style={{ fontSize:'clamp(1.1rem,3vw,1.75rem)', lineHeight:1.55, color: theme === 'dark' ? '#f0ece4' : '#0a1628', letterSpacing:'0.02em', margin:0 }}>
+                  "Together we can build a society that is strong, resilient, just, inclusive and prosperous."
+                </h2>
+              </div>
             </div>
           </div>
         </div>
@@ -1303,25 +1377,37 @@ export default function App() {
             <div style={{ width:'60px', height:'3px', background: 'var(--accent-gold)', margin:'0 auto', borderRadius:'2px' }} />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label:'Twice Chief Minister', sub:'of Nagaland', id:'achievement-cm', num:'2×' },
-              { label:'Elected Representative', sub:'Nine consecutive terms', id:'achievement-9time', num:'9×' },
-              { label:'Member of Parliament', sub:'Rajya Sabha', id:'achievement-mp', num:'RS' },
-              { label:'Years of Service', sub:'Unbroken dedication', id:'achievement-40years', num:'40+' },
-              { label:'Led NPF', sub:'As single largest party', id:'achievement-npf', num:'①' },
-              { label:'Chairman, UDA', sub:'Urban Development Authority', id:'achievement-uda', num:'UDA' },
-              { label:'Naga Resolution', sub:'Lifelong advocate', id:'achievement-naga', num:'☮' },
-              { label:'NE Development', sub:'Champion of the region', id:'achievement-ne', num:'NE' },
+              { label:'Twice Chief Minister',    sub:'of Nagaland',              id:'achievement-cm',       num:'2×',  bg:'linear-gradient(135deg,#0a1628,#0d2347)', accent:'#5b9bd5', shape:'20px 4px 20px 4px' },
+              { label:'Elected Representative', sub:'Nine consecutive terms',    id:'achievement-9time',    num:'9×',  bg:'linear-gradient(135deg,#1a0e00,#3d2900)', accent:'#c9a84c', shape:'4px 20px 4px 20px' },
+              { label:'Member of Parliament',   sub:'Rajya Sabha',               id:'achievement-mp',       num:'RS',  bg:'linear-gradient(135deg,#06160d,#0f2c1c)', accent:'#4caf7d', shape:'20px 20px 4px 4px' },
+              { label:'Years of Service',       sub:'Unbroken dedication',       id:'achievement-40years',  num:'40+', bg:'linear-gradient(135deg,#160a1a,#2e0f3a)', accent:'#9b72cf', shape:'4px 4px 20px 20px' },
+              { label:'Led NPF',                sub:'As single largest party',   id:'achievement-npf',      num:'①',  bg:'linear-gradient(135deg,#0f1a0a,#1e3510)', accent:'#7ab648', shape:'4px 20px 4px 20px' },
+              { label:'Chairman, UDA',          sub:'Urban Development Auth.',   id:'achievement-uda',      num:'UDA', bg:'linear-gradient(135deg,#0d1520,#162840)', accent:'#4a8fa8', shape:'20px 4px 20px 4px' },
+              { label:'Naga Resolution',        sub:'Lifelong advocate',         id:'achievement-naga',     num:'☮',  bg:'linear-gradient(135deg,#1a0f00,#2e1f00)', accent:'#e8a830', shape:'4px 4px 20px 20px' },
+              { label:'NE Development',         sub:'Champion of the region',    id:'achievement-ne',       num:'NE',  bg:'linear-gradient(135deg,#14070f,#280e1e)', accent:'#c45f8a', shape:'20px 20px 4px 4px' },
             ].map((item, index) => (
-              <div key={index} onClick={() => openSubpage(item.id)} className="reveal-on-scroll reveal-zoom cursor-pointer premium-3d-card p-8 text-center">
-                {/* Number badge */}
-                <div className="w-14 h-14 rounded-full bg-white/25 flex items-center justify-center mx-auto mb-4 border border-white/40 icon-accent">
-                  <span className="font-anton text-lg" style={{ color: 'var(--card-accent-dark)' }}>{item.num}</span>
+              <div key={index} onClick={() => openSubpage(item.id)} className="reveal-on-scroll reveal-zoom cursor-pointer" style={{
+                background: item.bg,
+                border: `1px solid ${item.accent}25`,
+                borderRadius: item.shape,
+                padding: 'clamp(1rem,2.5vw,1.5rem) clamp(0.75rem,2vw,1.25rem)',
+                display: 'flex', flexDirection: 'column', gap: '0.35rem',
+                minHeight: '150px', position: 'relative', overflow: 'hidden',
+                boxShadow: `0 6px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)`,
+                transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease',
+              }}
+              onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(-6px) scale(1.02)';(e.currentTarget as HTMLElement).style.boxShadow=`0 18px 50px rgba(0,0,0,0.4), 0 0 0 1px ${item.accent}50`;}}
+              onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(0) scale(1)';(e.currentTarget as HTMLElement).style.boxShadow=`0 6px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)`;}}>
+                {/* Corner glow */}
+                <div style={{ position:'absolute', top:'-15px', right:'-15px', width:'70px', height:'70px', borderRadius:'50%', background:`radial-gradient(circle, ${item.accent}20, transparent 70%)`, pointerEvents:'none' }} />
+                <span className="font-anton" style={{ fontSize:'clamp(1.4rem,4vw,2rem)', color:item.accent, lineHeight:1, position:'relative' }}>{item.num}</span>
+                <h4 className="font-anton uppercase" style={{ fontSize:'clamp(0.6rem,1.8vw,0.75rem)', color:'#f0ece4', lineHeight:1.3, margin:'0.1rem 0 0' }}>{item.label}</h4>
+                <p className="font-poppins" style={{ fontSize:'clamp(0.5rem,1.4vw,0.6rem)', color:'rgba(220,215,205,0.4)', margin:0 }}>{item.sub}</p>
+                <div style={{ marginTop:'auto', paddingTop:'0.6rem', borderTop:`1px solid rgba(255,255,255,0.05)` }}>
+                  <span className="font-poppins uppercase tracking-widest" style={{ fontSize:'0.48rem', color:`${item.accent}80` }}>Explore →</span>
                 </div>
-                <h4 className="font-anton text-lg mb-1 tracking-wider uppercase">{item.label}</h4>
-                <p className="font-poppins text-xs opacity-90 mb-4">{item.sub}</p>
-                <p className="font-poppins text-[10px] tracking-widest border-t border-white/20 pt-4 uppercase hover:underline">TAP TO EXPLORE →</p>
               </div>
             ))}
           </div>
@@ -1336,16 +1422,79 @@ export default function App() {
         {/* Faint nebula glow */}
         {theme === 'dark' && <div style={{ position:'absolute', top:'-20%', right:'-10%', width:'60%', height:'80%', background:'radial-gradient(ellipse at center, rgba(60,20,120,0.08) 0%, transparent 70%)', transform:'rotate(12deg)', pointerEvents:'none', zIndex:0 }} />}
         <div className="max-w-7xl mx-auto px-6 relative" style={{ zIndex:1 }}>
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-3 gap-8">
             {[
-              { title: 'Integrity', id: 'value-integrity', desc: 'Unwavering commitment to honest governance and ethical leadership in every decision made for the state.' },
-              { title: 'Unity', id: 'value-unity', desc: 'Bringing together diverse voices and tribes to work towards a common goal of a peaceful and prosperous Nagaland.' },
-              { title: 'Progress', id: 'value-progress', desc: 'A relentless drive to modernize infrastructure, economy, and social systems while preserving our rich heritage.' },
+              {
+                title: 'Integrity', id: 'value-integrity', num: '01',
+                desc: 'Unwavering commitment to honest governance and ethical leadership in every decision made for the state.',
+                bg: 'linear-gradient(160deg, #0a1628 0%, #0d2347 100%)',
+                accent: '#5b9bd5',
+                style: 'split',
+              },
+              {
+                title: 'Unity', id: 'value-unity', num: '02',
+                desc: 'Bringing together diverse voices and tribes to work towards a common goal of a peaceful and prosperous Nagaland.',
+                bg: 'linear-gradient(160deg, #1a0e00 0%, #3d2900 100%)',
+                accent: '#c9a84c',
+                style: 'split', // two-tone split layout
+              },
+              {
+                title: 'Progress', id: 'value-progress', num: '03',
+                desc: 'A relentless drive to modernize infrastructure, economy, and social systems while preserving our rich heritage.',
+                bg: 'linear-gradient(160deg, #06160d 0%, #0f2c1c 100%)',
+                accent: '#4caf7d',
+                style: 'line', // minimal line-accent layout
+              },
             ].map((value, index) => (
-              <div key={index} className="reveal-on-scroll cursor-pointer premium-3d-card p-10 text-center" onClick={() => openSubpage(value.id)}>
-                <h3 className="font-anton text-3xl mb-6 tracking-wide">{value.title}</h3>
-                <p className="font-poppins leading-relaxed text-lg opacity-90">{value.desc}</p>
-                <p className="font-poppins text-[10px] tracking-widest mt-8 border-t border-white/20 pt-4 uppercase hover:underline">Read more →</p>
+              <div key={index} className="reveal-on-scroll cursor-pointer" onClick={() => openSubpage(value.id)} style={{
+                background: value.bg,
+                borderRadius: index === 0 ? '20px 4px 20px 4px' : index === 1 ? '4px 20px 4px 20px' : '20px 20px 4px 4px',
+                border: `1px solid ${value.accent}20`,
+                overflow: 'hidden', position: 'relative',
+                boxShadow: '0 12px 50px rgba(0,0,0,0.3)',
+                transition: 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease',
+                minHeight: '280px',
+              }}
+              onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(-6px)';(e.currentTarget as HTMLElement).style.boxShadow=`0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px ${value.accent}35`;}}
+              onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(0)';(e.currentTarget as HTMLElement).style.boxShadow='0 12px 50px rgba(0,0,0,0.3)';}}>
+
+                {/* Style: full bleed number watermark */}
+                {value.style === 'full' && <>
+                  <span className="font-anton" style={{ position:'absolute', bottom:'-1.5rem', right:'1rem', fontSize:'9rem', color:`${value.accent}10`, lineHeight:1, userSelect:'none', pointerEvents:'none' }}>{value.num}</span>
+                  <div style={{ padding:'2.25rem', height:'100%', display:'flex', flexDirection:'column', gap:'1rem', position:'relative' }}>
+                    <div style={{ width:'40px', height:'3px', background:value.accent, borderRadius:'2px' }} />
+                    <p className="font-poppins uppercase tracking-widest" style={{ fontSize:'0.58rem', color:`${value.accent}90`, margin:0, letterSpacing:'0.18em' }}>Core Value</p>
+                    <h3 className="font-anton" style={{ fontSize:'clamp(1.8rem,4vw,2.4rem)', color:'#f0ece4', margin:0, lineHeight:1.1 }}>{value.title}</h3>
+                    <p className="font-poppins" style={{ fontSize:'clamp(0.8rem,2vw,0.9rem)', color:'rgba(220,215,205,0.65)', lineHeight:1.75, margin:0, flexGrow:1 }}>{value.desc}</p>
+                    <span className="font-poppins uppercase tracking-widest" style={{ fontSize:'0.58rem', color:value.accent }}>Read More →</span>
+                  </div>
+                </>}
+
+                {/* Style: horizontal split top bar */}
+                {value.style === 'split' && <>
+                  <div style={{ background:`${value.accent}18`, borderBottom:`2px solid ${value.accent}40`, padding:'1.25rem 2.25rem', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                    <h3 className="font-anton" style={{ fontSize:'clamp(1.4rem,3.5vw,1.9rem)', color:'#f0ece4', margin:0 }}>{value.title}</h3>
+                    <span className="font-anton" style={{ fontSize:'2.5rem', color:`${value.accent}30`, lineHeight:1 }}>{value.num}</span>
+                  </div>
+                  <div style={{ padding:'2rem 2.25rem', display:'flex', flexDirection:'column', gap:'1rem' }}>
+                    <p className="font-poppins" style={{ fontSize:'clamp(0.8rem,2vw,0.9rem)', color:'rgba(220,215,205,0.65)', lineHeight:1.75, margin:0 }}>{value.desc}</p>
+                    <span className="font-poppins uppercase tracking-widest" style={{ fontSize:'0.58rem', color:value.accent, marginTop:'0.5rem' }}>Read More →</span>
+                  </div>
+                </>}
+
+                {/* Style: minimal line accent */}
+                {value.style === 'line' && <>
+                  <div style={{ position:'absolute', left:0, top:0, bottom:0, width:'4px', background:`linear-gradient(180deg, ${value.accent}, ${value.accent}30)` }} />
+                  <div style={{ padding:'2.25rem 2.25rem 2.25rem 2.75rem', display:'flex', flexDirection:'column', gap:'1.1rem', height:'100%' }}>
+                    <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
+                      <p className="font-poppins uppercase tracking-widest" style={{ fontSize:'0.58rem', color:`${value.accent}90`, margin:0, letterSpacing:'0.18em' }}>Core Value</p>
+                      <span className="font-anton" style={{ fontSize:'2.5rem', color:`${value.accent}20`, lineHeight:1 }}>{value.num}</span>
+                    </div>
+                    <h3 className="font-anton" style={{ fontSize:'clamp(1.8rem,4vw,2.4rem)', color:'#f0ece4', margin:0, lineHeight:1.1 }}>{value.title}</h3>
+                    <p className="font-poppins" style={{ fontSize:'clamp(0.8rem,2vw,0.9rem)', color:'rgba(220,215,205,0.65)', lineHeight:1.75, margin:0, flexGrow:1 }}>{value.desc}</p>
+                    <span className="font-poppins uppercase tracking-widest" style={{ fontSize:'0.58rem', color:value.accent }}>Read More →</span>
+                  </div>
+                </>}
               </div>
             ))}
           </div>

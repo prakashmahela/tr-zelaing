@@ -109,9 +109,9 @@ export default function App() {
   const cardBase: React.CSSProperties = {
     background: 'linear-gradient(135deg,#1a0d35 0%,#0f0720 100%)',
     borderRadius: '20px',
-    padding: '2rem 2.5rem',
-    borderLeft: '4px solid #a78bfa',
-    boxShadow: '0 10px 40px rgba(124,58,237,0.25), 0 2px 8px rgba(0,0,0,0.5)',
+    padding: '1.25rem 1.5rem',
+    borderLeft: '3px solid #a78bfa',
+    boxShadow: '0 8px 30px rgba(124,58,237,0.2), 0 2px 6px rgba(0,0,0,0.4)',
     transition: 'all 0.4s cubic-bezier(0.25,0.46,0.45,0.94)',
     transformStyle: 'preserve-3d' as const,
     cursor: 'pointer',
@@ -129,22 +129,22 @@ export default function App() {
   const BackBtn = () => (
     <button
       onClick={goBack}
-      className="flex items-center gap-2 text-violet-600 font-anton text-xs uppercase tracking-widest mb-12 hover:text-violet-400 transition-colors group"
+      className="flex items-center gap-1.5 text-violet-500 font-anton text-[10px] uppercase tracking-widest mb-6 hover:text-violet-300 transition-colors group cursor-pointer"
     >
-      <ArrowRight size={14} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> Back
+      <ArrowRight size={12} className="rotate-180 group-hover:-translate-x-1 transition-transform" /> Back
     </button>
   );
 
   const SH = ({ t }: { t: string }) => (
-    <h2 className="text-2xl font-anton text-violet-600 uppercase mb-4">{t}</h2>
+    <h2 className="text-xl font-anton text-violet-500 uppercase mb-3">{t}</h2>
   );
 
   const SubPage = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="fixed inset-0 z-[100] overflow-y-auto" style={{ background: "linear-gradient(135deg,#07030f 0%,#0f0720 100%)" }}>
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-3xl mx-auto px-6 py-10">
         <BackBtn />
-        <h1 className="text-5xl font-anton mb-8 text-white">{title}</h1>
-        <div className="space-y-10 font-poppins text-slate-300 leading-relaxed text-lg">{children}</div>
+        <h1 className="text-3xl font-anton mb-6 text-white tracking-tight">{title}</h1>
+        <div className="space-y-6 font-poppins text-slate-300 leading-relaxed text-base">{children}</div>
       </div>
     </div>
   );
@@ -763,6 +763,30 @@ export default function App() {
           <p>Zeliang's idea of progress is rooted in a deep respect for Nagaland's rich indigenous heritage. He has always believed that modernization and cultural preservation are not opposites but complements. Under his leadership, development programmes were designed to improve material conditions without eroding the unique identity of Naga communities. He championed road construction and digital connectivity to remote villages, improved healthcare infrastructure in tribal areas, and invested in education systems that preserved local languages while preparing students for the modern economy. Progress, for Zeliang, means that a Naga farmer has better roads, a Naga child has better schools, and a Naga elder can still celebrate the Hornbill Festival with pride.</p>
         </SubPage>
       )}
+      {activeSubpage === 'info-born' && (
+        <SubPage title="Early Life & Birth">
+          <p>T.R. Zeliang was born on February 21, 1952, in Mbaupungwa village, located in the Peren District of Nagaland. He is the son of the late Rangleu Zeliang.</p>
+          <p>Growing up in a remote village during a transformative period in Nagaland's history, his early years were shaped by the traditional values of his community and the challenges of rural life. This background instilled in him a deep understanding of the needs and aspirations of the grassroots people, which would later become the cornerstone of his political philosophy.</p>
+        </SubPage>
+      )}
+      {activeSubpage === 'info-constituency' && (
+        <SubPage title="Peren Constituency">
+          <p>T.R. Zeliang represents the 7-Peren Assembly Constituency in the Nagaland Legislative Assembly. Peren is a significant region in Nagaland, known for its rich cultural heritage and strategic importance.</p>
+          <p>Throughout his career, he has been a steadfast advocate for the development of his constituency, focusing on improving infrastructure, healthcare, and educational opportunities for the people of Peren. His long-standing representation of this constituency reflects the deep trust and bond he shares with the local community.</p>
+        </SubPage>
+      )}
+      {activeSubpage === 'info-party' && (
+        <SubPage title="Political Affiliation">
+          <p>T.R. Zeliang is a prominent leader of the Nationalist Democratic Progressive Party (NDPP) in Nagaland. The NDPP is a major regional political party that focuses on the progress, development, and regional identity of Nagaland.</p>
+          <p>As a senior leader within the party, he has played a crucial role in shaping its policies and strategies. His leadership has been instrumental in the party's success and its efforts to provide stable and progressive governance to the state of Nagaland.</p>
+        </SubPage>
+      )}
+      {activeSubpage === 'info-education' && (
+        <SubPage title="Educational Background">
+          <p>T.R. Zeliang completed his early education in Nagaland and later pursued higher studies. He holds a Bachelor of Arts (B.A.) degree from Kohima College, which is one of the premier educational institutions in the state.</p>
+          <p>His time in college was not just about academic learning; it was also the period when he became actively involved in student politics and social advocacy. This educational foundation, combined with his early leadership roles in student unions, prepared him for the complexities of public service and statecraft.</p>
+        </SubPage>
+      )}
 
       {activeSubpage === 'achievements' && (
         <SubPage title="Milestones and Achievements">
@@ -831,13 +855,11 @@ export default function App() {
       <section id="home" className="relative min-h-screen flex items-center pt-28 pb-16 lg:pt-40 lg:pb-8" style={{ background: "linear-gradient(135deg,#07030f 0%,#0d0520 40%,#110830 70%,#07030f 100%)" }} ref={heroRef}>
         <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-violet-200/20 rounded-full blur-3xl parallax-layer" data-speed="0.1"></div>
         <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-violet-100/30 rounded-full blur-3xl parallax-layer" data-speed="0.2"></div>
-        <div className="absolute top-1/2 left-10 w-20 h-px bg-violet-400/20 parallax-layer" data-speed="0.3"></div>
-        <div className="absolute top-1/3 right-20 w-px h-40 bg-violet-200/20 parallax-layer" data-speed="0.15"></div>
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div className="reveal-on-scroll reveal-left text-center lg:text-left flex flex-col items-center lg:items-start">
             <h1 className="text-clamp-hero leading-[0.9] mb-4 font-anton">
-              <span className="animate-color-flow">TADITUI RANGKAU</span><br />
-              <span className="animate-color-flow-alt">ZELIANG</span>
+              <span className="text-white">TADITUI RANGKAU</span><br />
+              <span className="text-amber-400">ZELIANG</span>
             </h1>
             <p className="font-anton text-lg md:text-xl text-violet-300/70 mb-6 tracking-wide">Deputy Chief Minister, Nagaland</p>
             <p className="font-poppins text-sm md:text-base text-slate-300 max-w-md mb-10 leading-relaxed mx-auto lg:mx-0">Two-time Chief Minister · Member of Parliament · 40+ Years of Public Service. A legacy built on peace, progress, and the unwavering spirit of Nagaland.</p>
@@ -846,11 +868,11 @@ export default function App() {
                 fontFamily: 'Anton, sans-serif', letterSpacing: '0.08em', fontSize: 'clamp(0.7rem, 2.5vw, 0.85rem)',
                 padding: '0.7rem 1.6rem', borderRadius: '6px',
                 background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 50%, #5b21b6 100%)',
-                color: '#fff', border: 'none', boxShadow: '0 4px 20px rgba(124,58,237,0.35), inset 0 1px 0 rgba(255,255,255,0.2)',
+                color: '#fff', border: 'none', boxShadow: '0 4px 20px rgba(124,58,237,0.35)',
                 transition: 'all 0.3s ease', textTransform: 'uppercase',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(124,58,237,0.55), inset 0 1px 0 rgba(255,255,255,0.25)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(124,58,237,0.35), inset 0 1px 0 rgba(255,255,255,0.2)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(124,58,237,0.55)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(124,58,237,0.35)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
                 Political Journey <ArrowRight size={15} />
               </button>
               <button onClick={() => openSubpage('vision')} className="cursor-pointer" style={{
@@ -858,7 +880,7 @@ export default function App() {
                 padding: '0.7rem 1.6rem', borderRadius: '6px',
                 background: 'transparent', color: '#7c3aed',
                 border: '1.5px solid #7c3aed',
-                boxShadow: '0 2px 12px rgba(124,58,237,0.12), inset 0 1px 0 rgba(124,58,237,0.05)',
+                boxShadow: '0 2px 12px rgba(124,58,237,0.12)',
                 transition: 'all 0.3s ease', textTransform: 'uppercase',
               }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(124,58,237,0.08)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(124,58,237,0.25)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
@@ -869,7 +891,7 @@ export default function App() {
           </div>
           <div className="relative flex justify-center items-center perspective-container reveal-right">
             <div ref={portraitRef} className="relative w-full max-w-[230px] md:max-w-[300px] preserve-3d transition-transform duration-200 ease-out">
-              <div className="rounded-3xl shadow-2xl overflow-hidden" style={{ border: "3px solid rgba(167,139,250,0.4)", boxShadow: "0 0 60px rgba(124,58,237,0.3), 0 30px 80px rgba(0,0,0,0.8)" }} style={{ height: 'clamp(290px, 52vw, 420px)' }}>
+              <div className="rounded-3xl shadow-2xl overflow-hidden" style={{ border: "3px solid rgba(167,139,250,0.4)", boxShadow: "0 0 60px rgba(124,58,237,0.3), 0 30px 80px rgba(0,0,0,0.8)", height: 'clamp(290px, 52vw, 420px)' }}>
                 <img src="https://i.ibb.co/VY8tcdMs/2017-7-largeimg24-Monday-2017-113308648.jpg" alt="Hon. T.R. Zeliang" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 8%', display:'block' }} referrerPolicy="no-referrer" />
               </div>
               <div className="absolute -bottom-1 -right-1 translate-z-20" style={{
@@ -904,16 +926,16 @@ export default function App() {
                 <h3 className="font-anton text-2xl mb-8 pb-4 text-center text-white border-b" style={{ borderColor:"rgba(167,139,250,0.15)" }}>Key Information</h3>
                 <ul className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                   {[
-                    { icon: <Calendar size={24} />, label: 'Born', value: 'February 21, 1952' },
-                    { icon: <MapPin size={24} />, label: 'Constituency', value: 'Peren, Nagaland' },
-                    { icon: <Shield size={24} />, label: 'Party', value: 'NDPP' },
-                    { icon: <GraduationCap size={24} />, label: 'Education', value: 'B.A. Kohima College' },
+                    { icon: <Calendar size={24} />, label: 'Born', value: 'February 21, 1952', id: 'info-born' },
+                    { icon: <MapPin size={24} />, label: 'Constituency', value: 'Peren, Nagaland', id: 'info-constituency' },
+                    { icon: <Shield size={24} />, label: 'Party', value: 'NDPP', id: 'info-party' },
+                    { icon: <GraduationCap size={24} />, label: 'Education', value: 'B.A. Kohima College', id: 'info-education' },
                   ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2">
-                      <div className="w-7 h-7 bg-violet-50 rounded-lg flex items-center justify-center text-violet-500 shrink-0" style={{ fontSize: '14px' }}>{item.icon}</div>
+                    <li key={i} className="flex items-center gap-2 cursor-pointer group" onClick={() => openSubpage(item.id)}>
+                      <div className="w-7 h-7 bg-violet-50 rounded-lg flex items-center justify-center text-violet-500 shrink-0 group-hover:bg-amber-400 group-hover:text-white transition-colors" style={{ fontSize: '14px' }}>{item.icon}</div>
                       <div className="flex items-baseline gap-1 min-w-0">
                         <p className="text-[10px] uppercase tracking-wider text-violet-400/60 font-bold font-poppins shrink-0">{item.label}:</p>
-                        <p className="text-xs font-semibold text-white font-poppins truncate">{item.value}</p>
+                        <p className="text-xs font-semibold text-white font-poppins truncate group-hover:text-amber-400 transition-colors">{item.value}</p>
                       </div>
                     </li>
                   ))}
@@ -988,8 +1010,7 @@ export default function App() {
           </div>
 
           <div className="relative">
-            <div className="timeline-line"></div>
-            <div className="space-y-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 { year: '1975–1982', title: 'Student Leader', desc: 'President, Zeliangrong Students Union, Kohima. Began grassroots activism and social advocacy across Nagaland.', subpageId: 'journey-student' },
                 { year: '1982', title: 'First Electoral Contest', desc: 'Contested from Tening Constituency for the Nagaland Legislative Assembly. Built lasting voter trust despite the loss.', subpageId: 'journey-1982' },
@@ -1001,31 +1022,26 @@ export default function App() {
                 { year: '2017', title: 'Second Term as CM', desc: 'Returned as Chief Minister for a second term in July 2017. Continued the Nagaland Vision 2030 developmental agenda.', subpageId: 'journey-2017' },
                 { year: '2023–Present', title: 'Deputy Chief Minister', desc: 'Holds Planning & Transformation and National Highway portfolios. Leading Nagaland\'s connectivity revolution.', subpageId: 'journey-deputy' },
               ].map((item, index) => (
-                <div key={index} className={`relative flex flex-col md:flex-row items-center gap-8 reveal-on-scroll ${index % 2 === 0 ? 'reveal-right md:flex-row-reverse' : 'reveal-left'}`}>
-                  <div className="timeline-dot"></div>
-                  <div className="w-full md:w-1/2">
-                    {/* FIX 2: premium pure white 3D card with float animation */}
-                    <div
-                      onClick={() => openSubpage(item.subpageId)}
-                      onMouseEnter={() => setHoveredCard(index)}
-                      onMouseLeave={() => setHoveredCard(null)}
-                      style={hoveredCard === index ? hoveredCardStyle : {
-                        ...cardBase,
-                        animation: `${index % 2 === 0 ? 'cardFloatLeft' : 'cardFloatRight'} ${3.2 + (index % 3) * 0.6}s ease-in-out ${index * 0.25}s infinite alternate`,
-                      }}
-                      className={index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}
-                    >
-                      {/* shimmer line */}
-                      <div style={{ position: 'absolute', top: 0, left: '20px', right: '20px', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.6), transparent)', borderRadius: '1px' }}></div>
-                      <span style={{ fontFamily: 'Anton, sans-serif', color: '#7c3aed', fontSize: '1.25rem', display: 'block', marginBottom: '0.5rem' }}>{item.year}</span>
-                      <h3 style={{ fontFamily: 'Anton, sans-serif', fontSize: '1.3rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color:'#f1f0ff' }}>
-                        {item.title}
-                        <ArrowRight size={16} style={{ opacity: hoveredCard === index ? 1 : 0, transition: 'opacity 0.3s', color: '#a78bfa', flexShrink: 0 }} />
-                      </h3>
-                      <p style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(196,181,253,0.75)', fontSize: '0.9rem', lineHeight: '1.7', margin: 0 }}>{item.desc}</p>
-                    </div>
+                <div key={index} className="reveal-on-scroll">
+                  {/* FIX 2: premium pure white 3D card with float animation */}
+                  <div
+                    onClick={() => openSubpage(item.subpageId)}
+                    onMouseEnter={() => setHoveredCard(index)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    style={hoveredCard === index ? hoveredCardStyle : {
+                      ...cardBase,
+                      animation: `${index % 2 === 0 ? 'cardFloatLeft' : 'cardFloatRight'} ${3.2 + (index % 3) * 0.6}s ease-in-out ${index * 0.25}s infinite alternate`,
+                    }}
+                  >
+                    {/* shimmer line */}
+                    <div style={{ position: 'absolute', top: 0, left: '20px', right: '20px', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.6), transparent)', borderRadius: '1px' }}></div>
+                    <span style={{ fontFamily: 'Anton, sans-serif', color: '#7c3aed', fontSize: '1rem', display: 'block', marginBottom: '0.4rem' }}>{item.year}</span>
+                    <h3 style={{ fontFamily: 'Anton, sans-serif', fontSize: '1.15rem', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color:'#f1f0ff' }}>
+                      {item.title}
+                      <ArrowRight size={14} style={{ opacity: hoveredCard === index ? 1 : 0, transition: 'opacity 0.3s', color: '#a78bfa', flexShrink: 0 }} />
+                    </h3>
+                    <p style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(196,181,253,0.75)', fontSize: '0.85rem', lineHeight: '1.6', margin: 0 }}>{item.desc}</p>
                   </div>
-                  <div className="hidden md:block md:w-1/2"></div>
                 </div>
               ))}
             </div>

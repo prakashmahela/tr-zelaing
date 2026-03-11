@@ -10,16 +10,54 @@
   --color-soft-blue: #e0f2fe;
 }
 
+:root {
+  /* Default Dark Mode Variables */
+  --bg-primary: #07030f;
+  --bg-secondary: #1a0d35;
+  --bg-accent: #0f0720;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(221, 214, 254, 0.85);
+  --text-muted: rgba(167, 139, 250, 0.55);
+  --accent-gold: #f59e0b;
+  --shadow: rgba(0, 0, 0, 0.6);
+  --border: rgba(167, 139, 250, 0.15);
+  --nav-bg: rgba(0, 0, 0, 0.6);
+  --card-bg: linear-gradient(135deg, #1a0d35 0%, #0f0720 100%);
+  --hero-bg: linear-gradient(135deg, #07030f 0%, #0d0520 40%, #110830 70%, #07030f 100%);
+  --transition-speed: 0.3s;
+}
+
+[data-theme="beige"] {
+  --bg-primary: #FAF9F6;
+  --bg-secondary: #F5F0E8;
+  --bg-accent: #EDE6D6;
+  --text-primary: #1A1410;
+  --text-secondary: #3D3328;
+  --text-muted: #6B5D4F;
+  --accent-gold: #8B6914;
+  --shadow: rgba(90, 70, 40, 0.08);
+  --border: #DED5C4;
+  --nav-bg: rgba(250, 249, 246, 0.85);
+  --card-bg: var(--bg-secondary);
+  --hero-bg: var(--bg-primary);
+}
+
 @layer base {
+  * {
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  }
+
   body {
-    @apply font-poppins text-body antialiased selection:bg-sky-100;
-    background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 40%, #e0f2fe 100%);
+    @apply font-poppins antialiased selection:bg-sky-100;
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
     min-height: 100vh;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-anton uppercase tracking-wider text-charcoal;
+    @apply font-anton uppercase tracking-wider;
+    color: var(--text-primary);
   }
 
   /* Noise Texture Overlay */
@@ -98,12 +136,15 @@
   }
 
   .premium-card {
-    @apply bg-white/80 border border-white shadow-[0_10px_40px_rgba(186,230,253,0.3)] rounded-2xl transition-all duration-500 backdrop-blur-sm;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 40px var(--shadow);
+    @apply rounded-2xl transition-all duration-500 backdrop-blur-sm;
   }
 
   .btn-primary {
-    @apply text-white font-anton px-8 py-4 rounded-lg transition-all duration-300 uppercase tracking-widest flex items-center justify-center gap-2 shadow-md hover:shadow-sky-300/50 hover:-translate-y-1 active:translate-y-0 active:scale-95;
-    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+    @apply text-white font-anton px-8 py-4 rounded-lg transition-all duration-300 uppercase tracking-widest flex items-center justify-center gap-2 shadow-md hover:-translate-y-1 active:translate-y-0 active:scale-95;
+    background: var(--accent-gold);
   }
 
   .btn-outline {
@@ -170,3 +211,177 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* 🧊 Premium 3D Vivid Card System */
+.premium-3d-card {
+  border-radius: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.70),
+    inset 1px 0 0 rgba(255, 255, 255, 0.30);
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+/* Top-left glass shine */
+.premium-3d-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 0;
+  background: none;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bottom-right depth + extra shine strip */
+.premium-3d-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    /* bright top edge highlight */
+    linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 12%),
+    /* left edge highlight */
+    linear-gradient(90deg, rgba(255,255,255,0.14) 0%, transparent 10%),
+    /* diagonal sparkle streak */
+    linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0.06) 55%, transparent 65%),
+    /* bottom-right depth */
+    linear-gradient(315deg, rgba(0,0,0,0.15) 0%, transparent 50%);
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover: pop up with spring bounce */
+.premium-3d-card:hover {
+  transform: translateY(-10px) scale(1.03) !important;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.40),
+    0 8px 20px rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90),
+    inset 1px 0 0 rgba(255, 255, 255, 0.50) !important;
+  border-color: rgba(255,255,255,0.75) !important;
+}
+
+.premium-3d-card {
+  background: var(--card-grad) !important;
+}
+
+/* Text on vivid cards */
+.premium-3d-card h1, .premium-3d-card h2, .premium-3d-card h3, .premium-3d-card h4 {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25) !important;
+}
+.premium-3d-card p, .premium-3d-card span, .premium-3d-card li, .premium-3d-card div {
+  color: rgba(255,255,255,0.92) !important;
+}
+.premium-3d-card .text-muted, .premium-3d-card .text-dark-muted, .premium-3d-card p.text-xs {
+  color: rgba(255,255,255,0.75) !important;
+}
+.premium-3d-card .icon-accent {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+.premium-3d-card .icon-accent span {
+  color: #ffffff !important;
+}
+
+/* Cycling logic with offsets — Professional Political Palette */
+/* ══ PREMIUM JEWEL PALETTE — 8 Distinct Expensive Colors ══
+   1. Midnight Sapphire   — deep navy blue → cobalt
+   2. Royal Burgundy      — oxblood → deep crimson
+   3. Antique Gold        — warm bronze → burnished gold  
+   4. Imperial Emerald    — forest green → deep jade
+   5. Obsidian Violet     — deep purple → dark plum
+   6. Prussian Steel      — dark teal → slate
+   7. Cognac              — rich amber → burnt sienna
+   8. Graphite Platinum   — charcoal → silver-black
+*/
+
+/* 8 unique card color definitions — Vivid Professional Palette */
+:root {
+  /* 1. Electric Cobalt — bold blue → bright sky */
+  --c1-grad: linear-gradient(145deg, #0a2472, #1e4de0);
+  --c1-acc:  #60a5fa;
+
+  /* 2. Crimson Fire — deep red → vivid scarlet */
+  --c2-grad: linear-gradient(145deg, #7f0000, #dc2626);
+  --c2-acc:  #fca5a5;
+
+  /* 3. Emerald Surge — deep forest → vivid jade */
+  --c3-grad: linear-gradient(145deg, #064e3b, #059669);
+  --c3-acc:  #6ee7b7;
+
+  /* 4. Royal Violet — deep indigo → electric purple */
+  --c4-grad: linear-gradient(145deg, #2e1065, #7c3aed);
+  --c4-acc:  #c4b5fd;
+
+  /* 5. Teal Neon — dark teal → vivid cyan */
+  --c5-grad: linear-gradient(145deg, #0c4a6e, #0891b2);
+  --c5-acc:  #67e8f9;
+
+  /* 6. Amber Blaze — dark amber → golden fire */
+  --c6-grad: linear-gradient(145deg, #78350f, #d97706);
+  --c6-acc:  #fde68a;
+
+  /* 7. Rose Magenta — deep rose → vivid pink */
+  --c7-grad: linear-gradient(145deg, #500724, #be185d);
+  --c7-acc:  #f9a8d4;
+
+  /* 8. Slate Storm — gunmetal → steel blue */
+  --c8-grad: linear-gradient(145deg, #0f172a, #334155);
+  --c8-acc:  #94a3b8;
+}
+
+/* Section 1 (About) — starts at Sapphire */
+.section-1 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c1-grad); --card-accent-dark: var(--c1-acc); }
+.section-1 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c2-grad); --card-accent-dark: var(--c2-acc); }
+.section-1 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c3-grad); --card-accent-dark: var(--c3-acc); }
+.section-1 .premium-3d-card:nth-child(8n+4) { --card-grad: var(--c4-grad); --card-accent-dark: var(--c4-acc); }
+.section-1 .premium-3d-card:nth-child(8n+5) { --card-grad: var(--c5-grad); --card-accent-dark: var(--c5-acc); }
+.section-1 .premium-3d-card:nth-child(8n+6) { --card-grad: var(--c6-grad); --card-accent-dark: var(--c6-acc); }
+.section-1 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c7-grad); --card-accent-dark: var(--c7-acc); }
+.section-1 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c8-grad); --card-accent-dark: var(--c8-acc); }
+
+/* Section 2 (Vision) — offset by 4 */
+.section-2 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c5-grad); --card-accent-dark: var(--c5-acc); }
+.section-2 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c6-grad); --card-accent-dark: var(--c6-acc); }
+.section-2 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c7-grad); --card-accent-dark: var(--c7-acc); }
+.section-2 .premium-3d-card:nth-child(8n+4) { --card-grad: var(--c8-grad); --card-accent-dark: var(--c8-acc); }
+.section-2 .premium-3d-card:nth-child(8n+5) { --card-grad: var(--c1-grad); --card-accent-dark: var(--c1-acc); }
+.section-2 .premium-3d-card:nth-child(8n+6) { --card-grad: var(--c2-grad); --card-accent-dark: var(--c2-acc); }
+.section-2 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c3-grad); --card-accent-dark: var(--c3-acc); }
+.section-2 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c4-grad); --card-accent-dark: var(--c4-acc); }
+
+/* Section 3 (Initiatives) — offset by 2 */
+.section-3 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c3-grad); --card-accent-dark: var(--c3-acc); }
+.section-3 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c4-grad); --card-accent-dark: var(--c4-acc); }
+.section-3 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c5-grad); --card-accent-dark: var(--c5-acc); }
+.section-3 .premium-3d-card:nth-child(8n+4) { --card-grad: var(--c6-grad); --card-accent-dark: var(--c6-acc); }
+.section-3 .premium-3d-card:nth-child(8n+5) { --card-grad: var(--c7-grad); --card-accent-dark: var(--c7-acc); }
+.section-3 .premium-3d-card:nth-child(8n+6) { --card-grad: var(--c8-grad); --card-accent-dark: var(--c8-acc); }
+.section-3 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c1-grad); --card-accent-dark: var(--c1-acc); }
+.section-3 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c2-grad); --card-accent-dark: var(--c2-acc); }
+
+/* Section 4 (Achievements) — offset by 6 */
+.section-4 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c7-grad); --card-accent-dark: var(--c7-acc); }
+.section-4 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c8-grad); --card-accent-dark: var(--c8-acc); }
+.section-4 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c1-grad); --card-accent-dark: var(--c1-acc); }
+.section-4 .premium-3d-card:nth-child(8n+4) { --card-grad: var(--c2-grad); --card-accent-dark: var(--c2-acc); }
+.section-4 .premium-3d-card:nth-child(8n+5) { --card-grad: var(--c3-grad); --card-accent-dark: var(--c3-acc); }
+.section-4 .premium-3d-card:nth-child(8n+6) { --card-grad: var(--c4-grad); --card-accent-dark: var(--c4-acc); }
+.section-4 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c5-grad); --card-accent-dark: var(--c5-acc); }
+.section-4 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c6-grad); --card-accent-dark: var(--c6-acc); }
+
+/* Office section rows */
+.office-row-1 { --card-grad: var(--c1-grad) !important; --card-accent-dark: var(--c1-acc) !important; }
+.office-row-2 { --card-grad: var(--c4-grad) !important; --card-accent-dark: var(--c4-acc) !important; }
+.office-row-3 { --card-grad: var(--c2-grad) !important; --card-accent-dark: var(--c2-acc) !important; }
+
+

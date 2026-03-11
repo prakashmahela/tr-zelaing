@@ -7,10 +7,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Menu, X, ChevronRight, MapPin, Calendar, GraduationCap,
   Award, Target, Users, Briefcase, Facebook,
-  Twitter, ArrowRight, Shield, Heart, Zap,
+  ArrowRight, Shield, Heart, Zap, Sun, Moon,
 } from 'lucide-react';
 
 export default function App() {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSubpage, setActiveSubpage] = useState<string | null>(null);
@@ -32,6 +33,15 @@ export default function App() {
     requestAnimationFrame(() => {
       window.scrollTo({ top: savedScrollY, behavior: 'instant' });
     });
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'beige' : 'dark');
   };
 
   useEffect(() => {
@@ -107,11 +117,11 @@ export default function App() {
 
   // FIX 2: card styles
   const cardBase: React.CSSProperties = {
-    background: 'linear-gradient(135deg,#1a0d35 0%,#0f0720 100%)',
+    background: 'var(--bg-secondary)',
     borderRadius: '20px',
     padding: '1.25rem 1.5rem',
-    borderLeft: '3px solid #a78bfa',
-    boxShadow: '0 8px 30px rgba(124,58,237,0.2), 0 2px 6px rgba(0,0,0,0.4)',
+    borderLeft: '3px solid var(--accent-gold)',
+    boxShadow: '0 8px 30px var(--shadow)',
     transition: 'all 0.4s cubic-bezier(0.25,0.46,0.45,0.94)',
     transformStyle: 'preserve-3d' as const,
     cursor: 'pointer',
@@ -120,8 +130,8 @@ export default function App() {
 
   const hoveredCardStyle: React.CSSProperties = {
     ...cardBase,
-    borderLeft: '4px solid #f59e0b',
-    boxShadow: '0 30px 80px rgba(124,58,237,0.45), 0 8px 20px rgba(0,0,0,0.6), 0 0 0 1px rgba(167,139,250,0.3)',
+    borderLeft: '4px solid var(--accent-gold)',
+    boxShadow: '0 30px 80px var(--shadow), 0 8px 20px rgba(0,0,0,0.1)',
     transform: 'translateY(-10px) translateZ(20px) scale(1.01)',
   };
 
@@ -140,11 +150,11 @@ export default function App() {
   );
 
   const SubPage = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="fixed inset-0 z-[100] overflow-y-auto" style={{ background: "linear-gradient(135deg,#07030f 0%,#0f0720 100%)" }}>
+    <div className="fixed inset-0 z-[100] overflow-y-auto" style={{ background: "var(--bg-primary)" }}>
       <div className="max-w-3xl mx-auto px-6 py-10">
         <BackBtn />
-        <h1 className="text-3xl font-anton mb-6 text-white tracking-tight">{title}</h1>
-        <div className="space-y-6 font-poppins text-slate-300 leading-relaxed text-base">{children}</div>
+        <h1 className="text-3xl font-anton mb-6 text-[var(--text-primary)] tracking-tight">{title}</h1>
+        <div className="space-y-6 font-poppins text-[var(--text-secondary)] leading-relaxed text-base">{children}</div>
       </div>
     </div>
   );
@@ -168,7 +178,7 @@ export default function App() {
         }
 
         /* ── PREMIUM GLOBAL OVERRIDES ── */
-        body { background: #07030f; }
+        body { background: var(--bg-primary); }
 
         /* Futuristic scanline overlay */
         .relative::before {
@@ -177,9 +187,9 @@ export default function App() {
 
         /* Dark premium card */
         .premium-card {
-          background: linear-gradient(135deg, rgba(26,13,53,0.9) 0%, rgba(15,7,32,0.95) 100%) !important;
-          border: 1px solid rgba(167,139,250,0.15) !important;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(167,139,250,0.08) !important;
+          background: var(--card-bg) !important;
+          border: 1px solid var(--border) !important;
+          box-shadow: 0 20px 60px var(--shadow), inset 0 1px 0 rgba(167,139,250,0.08) !important;
           border-radius: 20px;
         }
 
@@ -260,25 +270,25 @@ export default function App() {
           animation: colorFlowGold 3.5s ease infinite reverse;
         }
 
-        .text-dark-sub  { color: rgba(196,181,253,0.75); }
-        .text-dark-body { color: rgba(221,214,254,0.85); }
-        .text-dark-muted{ color: rgba(167,139,250,0.55); }
+        .text-dark-sub  { color: var(--text-muted); }
+        .text-dark-body { color: var(--text-secondary); }
+        .text-dark-muted{ color: var(--text-muted); }
 
         /* About section heading */
-        h2.text-clamp-section { color: #ffffff; }
+        h2.text-clamp-section { color: var(--text-primary); }
 
         /* Subpage styling */
         .fixed.inset-0.z-\[100\].bg-white {
-          background: linear-gradient(135deg, #07030f 0%, #0f0720 100%) !important;
+          background: var(--bg-primary) !important;
         }
         
         /* Timeline line */
         .timeline-line {
-          background: linear-gradient(180deg, #7c3aed, #a78bfa, #f59e0b) !important;
+          background: var(--border) !important;
         }
         .timeline-dot {
-          background: linear-gradient(135deg, #a78bfa, #f59e0b) !important;
-          box-shadow: 0 0 20px rgba(124,58,237,0.6) !important;
+          background: var(--accent-gold) !important;
+          box-shadow: 0 0 20px var(--shadow) !important;
         }
 
         /* ── PREMIUM REVEAL ANIMATIONS ── */
@@ -355,6 +365,55 @@ export default function App() {
           2%   { opacity: 1; }
           8%   { transform: translateX(-110vw) rotate(-15deg); opacity: 0; }
           100% { transform: translateX(-110vw) rotate(-15deg); opacity: 0; }
+        }
+
+        /* Hero name color flow — keeps original black/gold palette */
+        @keyframes heroNameFlow {
+          0%   { background-position: 0% center; }
+          50%  { background-position: 100% center; }
+          100% { background-position: 0% center; }
+        }
+        .hero-name-flow {
+          background: linear-gradient(90deg,
+            var(--text-primary) 0%,
+            var(--text-primary) 20%,
+            #c9a84c 35%,
+            var(--text-primary) 50%,
+            var(--text-primary) 65%,
+            #f0c060 78%,
+            var(--text-primary) 90%,
+            var(--text-primary) 100%
+          );
+          background-size: 250% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: heroNameFlow 5s ease infinite;
+        }
+        .hero-gold-flow {
+          background: linear-gradient(90deg,
+            var(--accent-gold) 0%,
+            #fde68a 20%,
+            #f59e0b 35%,
+            #ffffff 50%,
+            #f59e0b 65%,
+            #fde68a 80%,
+            var(--accent-gold) 100%
+          );
+          background-size: 250% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: heroNameFlow 4s ease infinite reverse;
+        }
+        /* Contact form white text & placeholders */
+        .contact-input::placeholder { color: rgba(255,255,255,0.6) !important; }
+        .contact-input { color: #ffffff !important; caret-color: #ffffff; }
+
+        @keyframes quoteColorFlow {
+          0%   { background-position: 0% center; }
+          50%  { background-position: 150% center; }
+          100% { background-position: 300% center; }
         }
       `}</style>
 
@@ -440,7 +499,7 @@ export default function App() {
             <p className="mt-4">On the peace front, he engaged with both the Government of India and the various Naga political groups with a diplomacy born of deep cultural understanding. He consistently argued that the solution to the Naga political issue must be inclusive — that no lasting peace could be built if significant sections of Naga society felt left out of the settlement. He worked to create the conditions for dialogue, not just between governments, but within Naga society itself.</p>
           </section>
           <section><SH t="Return to the Helm: Second Term and Deputy Chief Minister (2017–Present)" />
-            <p>After a brief interruption, Zeliang returned as Chief Minister in July 2017, continuing the developmental agenda that had defined his first term. Following the 2023 elections, he transitioned to the role of Deputy Chief Minister under the NDPP-BJP alliance, bringing his experience and stature to bear in a new governmental configuration.</p>
+            <p>After a brief interruption, Zeliang returned as Chief Minister in July 2017, continuing the developmental agenda that had defined his first term. Following the 2023 elections, he transitioned to the role of Deputy Chief Minister, bringing his experience and stature to bear in a new governmental configuration.</p>
             <p className="mt-4">As Deputy Chief Minister, he has continued to focus on the issues that have defined his career — connectivity, youth employment, the Naga political settlement, and the sustainable development of Nagaland's economy. Approaching his fifth decade in public life, T.R. Zeliang remains one of Nagaland's most consequential political figures: a leader whose journey mirrors the story of his state — marked by challenge, resilience, and an enduring belief in a better future.</p>
           </section>
         </SubPage>
@@ -777,7 +836,7 @@ export default function App() {
       )}
       {activeSubpage === 'info-party' && (
         <SubPage title="Political Affiliation">
-          <p>T.R. Zeliang is a prominent leader of the Nationalist Democratic Progressive Party (NDPP) in Nagaland. The NDPP is a major regional political party that focuses on the progress, development, and regional identity of Nagaland.</p>
+          <p>T.R. Zeliang is a prominent leader of the Naga People's Front (NPF) in Nagaland. The NPF is a major regional political party that focuses on the progress, development, and regional identity of Nagaland.</p>
           <p>As a senior leader within the party, he has played a crucial role in shaping its policies and strategies. His leadership has been instrumental in the party's success and its efforts to provide stable and progressive governance to the state of Nagaland.</p>
         </SubPage>
       )}
@@ -824,26 +883,42 @@ export default function App() {
 
       {/* ═══════════════════════ NAVBAR ═══════════════════════ */}
       <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 flex justify-center ${isScrolled ? 'pt-4' : 'pt-0'}`}>
-        <div className={`transition-all duration-500 flex justify-between items-center ${isScrolled ? 'w-[92%] max-w-6xl px-8 py-3 rounded-2xl bg-black/60 backdrop-blur-xl shadow-[0_20px_50px_rgba(124,58,237,0.25)] border border-violet-700/30 nav-3d-effect' : 'w-full max-w-7xl px-6 py-8 bg-transparent'}`}>
+        <div className={`transition-all duration-500 flex justify-between items-center ${isScrolled ? 'w-[92%] max-w-6xl px-8 py-3 rounded-2xl bg-[var(--nav-bg)] backdrop-blur-xl shadow-[0_20px_50px_var(--shadow)] border border-[var(--border)] nav-3d-effect' : 'w-full max-w-7xl px-6 py-8 bg-transparent'}`}>
           <a href="#home" className="flex items-center gap-1 group">
-            <span className="font-anton text-2xl tracking-tighter text-white">TR ZELIANG</span>
+            <span className="font-anton text-2xl tracking-tighter text-[var(--text-primary)]">TR ZELIANG</span>
             <span className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 group-hover:scale-150 transition-transform duration-300"></span>
           </a>
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <button key={link.name} onClick={() => openSubpage(link.id, false)} className="font-poppins text-sm font-medium text-navy/70 hover:text-violet-600 transition-all duration-300 tracking-wide hover:-translate-y-1 hover:scale-110 active:scale-95 cursor-pointer">
+              <button key={link.name} onClick={() => openSubpage(link.id, false)} className="font-poppins text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-gold)] transition-all duration-300 tracking-wide hover:-translate-y-1 hover:scale-110 active:scale-95 cursor-pointer">
                 {link.name}
               </button>
             ))}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/10 text-[var(--text-primary)] cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
           </div>
-          <button className="lg:hidden text-white p-2 hover:bg-violet-900/40 rounded-lg transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="flex items-center gap-4 lg:hidden">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/10 text-[var(--text-primary)] cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button className="text-[var(--text-primary)] p-2 hover:bg-violet-900/40 rounded-lg transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
-        <div className={`lg:hidden absolute top-full left-1/2 -translate-x-1/2 w-[92%] mt-2 bg-black/85 backdrop-blur-xl rounded-2xl shadow-2xl border border-violet-700/30 transition-all duration-500 overflow-hidden ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`lg:hidden absolute top-full left-1/2 -translate-x-1/2 w-[92%] mt-2 bg-[var(--bg-secondary)] backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--border)] transition-all duration-500 overflow-hidden ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="flex flex-col p-6 gap-4">
             {navLinks.map((link) => (
-              <button key={link.name} onClick={() => { openSubpage(link.id, false); setIsMenuOpen(false); }} className="font-poppins text-lg font-medium text-navy border-b border-navy/5 pb-2 hover:text-violet-600 transition-colors text-left w-full cursor-pointer">
+              <button key={link.name} onClick={() => { openSubpage(link.id, false); setIsMenuOpen(false); }} className="font-poppins text-lg font-medium text-[var(--text-primary)] border-b border-[var(--border)] pb-2 hover:text-[var(--accent-gold)] transition-colors text-left w-full cursor-pointer">
                 {link.name}
               </button>
             ))}
@@ -852,57 +927,57 @@ export default function App() {
       </nav>
 
       {/* ═══════════════════════ HERO ═══════════════════════ */}
-      <section id="home" className="relative min-h-screen flex items-center pt-28 pb-16 lg:pt-40 lg:pb-8" style={{ background: "linear-gradient(135deg,#07030f 0%,#0d0520 40%,#110830 70%,#07030f 100%)" }} ref={heroRef}>
+      <section id="home" className="relative min-h-screen flex items-center pt-28 pb-16 lg:pt-40 lg:pb-8" style={{ background: "var(--hero-bg)" }} ref={heroRef}>
         <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-violet-200/20 rounded-full blur-3xl parallax-layer" data-speed="0.1"></div>
         <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-violet-100/30 rounded-full blur-3xl parallax-layer" data-speed="0.2"></div>
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
           <div className="reveal-on-scroll reveal-left text-center lg:text-left flex flex-col items-center lg:items-start">
             <h1 className="text-clamp-hero leading-[0.9] mb-4 font-anton">
-              <span className="text-white">TADITUI RANGKAU</span><br />
-              <span className="text-amber-400">ZELIANG</span>
+              <span className="hero-name-flow">TADITUI RANGKAU</span><br />
+              <span className="hero-gold-flow">ZELIANG</span>
             </h1>
-            <p className="font-anton text-lg md:text-xl text-violet-300/70 mb-6 tracking-wide">Deputy Chief Minister, Nagaland</p>
-            <p className="font-poppins text-sm md:text-base text-slate-300 max-w-md mb-10 leading-relaxed mx-auto lg:mx-0">Two-time Chief Minister · Member of Parliament · 40+ Years of Public Service. A legacy built on peace, progress, and the unwavering spirit of Nagaland.</p>
+            <p className="font-anton text-lg md:text-xl text-[var(--text-muted)] mb-6 tracking-wide">Deputy Chief Minister, Nagaland</p>
+            <p className="font-poppins text-sm md:text-base text-[var(--text-secondary)] max-w-md mb-10 leading-relaxed mx-auto lg:mx-0">Two-time Chief Minister · Member of Parliament · 40+ Years of Public Service. A legacy built on peace, progress, and the unwavering spirit of Nagaland.</p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
               <button onClick={() => openSubpage('legacy')} className="cursor-pointer flex items-center gap-2" style={{
                 fontFamily: 'Anton, sans-serif', letterSpacing: '0.08em', fontSize: 'clamp(0.7rem, 2.5vw, 0.85rem)',
                 padding: '0.7rem 1.6rem', borderRadius: '6px',
-                background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 50%, #5b21b6 100%)',
-                color: '#fff', border: 'none', boxShadow: '0 4px 20px rgba(124,58,237,0.35)',
+                background: 'var(--accent-gold)',
+                color: '#fff', border: 'none', boxShadow: '0 4px 20px var(--shadow)',
                 transition: 'all 0.3s ease', textTransform: 'uppercase',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(124,58,237,0.55)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(124,58,237,0.35)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px var(--shadow)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px var(--shadow)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
                 Political Journey <ArrowRight size={15} />
               </button>
               <button onClick={() => openSubpage('vision')} className="cursor-pointer" style={{
                 fontFamily: 'Anton, sans-serif', letterSpacing: '0.08em', fontSize: 'clamp(0.7rem, 2.5vw, 0.85rem)',
                 padding: '0.7rem 1.6rem', borderRadius: '6px',
-                background: 'transparent', color: '#7c3aed',
-                border: '1.5px solid #7c3aed',
-                boxShadow: '0 2px 12px rgba(124,58,237,0.12)',
+                background: 'transparent', color: 'var(--accent-gold)',
+                border: '1.5px solid var(--accent-gold)',
+                boxShadow: '0 2px 12px var(--shadow)',
                 transition: 'all 0.3s ease', textTransform: 'uppercase',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(124,58,237,0.08)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(124,58,237,0.25)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(124,58,237,0.12)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-accent)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px var(--shadow)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px var(--shadow)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
                 Vision & Policy
               </button>
             </div>
           </div>
           <div className="relative flex justify-center items-center perspective-container reveal-right">
             <div ref={portraitRef} className="relative w-full max-w-[230px] md:max-w-[300px] preserve-3d transition-transform duration-200 ease-out">
-              <div className="rounded-3xl shadow-2xl overflow-hidden" style={{ border: "3px solid rgba(167,139,250,0.4)", boxShadow: "0 0 60px rgba(124,58,237,0.3), 0 30px 80px rgba(0,0,0,0.8)", height: 'clamp(290px, 52vw, 420px)' }}>
+              <div className="rounded-3xl shadow-2xl overflow-hidden" style={{ border: "3px solid var(--border)", boxShadow: "0 0 60px var(--shadow), 0 30px 80px rgba(0,0,0,0.4)", height: 'clamp(290px, 52vw, 420px)' }}>
                 <img src="https://i.ibb.co/VY8tcdMs/2017-7-largeimg24-Monday-2017-113308648.jpg" alt="Hon. T.R. Zeliang" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 8%', display:'block' }} referrerPolicy="no-referrer" />
               </div>
               <div className="absolute -bottom-1 -right-1 translate-z-20" style={{
-                background: 'linear-gradient(135deg, #fff 0%, #faf5ff 100%)',
+                background: 'var(--bg-primary)',
                 padding: '0.35rem 0.6rem', borderRadius: '8px',
-                boxShadow: '0 4px 16px rgba(124,58,237,0.2), 0 1px 4px rgba(0,0,0,0.08)',
-                border: '1px solid rgba(124,58,237,0.15)',
+                boxShadow: '0 4px 16px var(--shadow), 0 1px 4px rgba(0,0,0,0.08)',
+                border: '1px solid var(--border)',
               }}>
-                <p className="font-anton text-violet-600 leading-tight" style={{ fontSize: '0.65rem', letterSpacing: '0.06em' }}>SERVING</p>
-                <p className="font-anton text-violet-400 leading-tight" style={{ fontSize: '0.65rem', letterSpacing: '0.06em' }}>NAGALAND</p>
-                <p className="font-poppins text-slate-400 uppercase tracking-widest" style={{ fontSize: '0.5rem', marginTop: '2px' }}>Since 1975</p>
+                <p className="font-anton text-[var(--accent-gold)] leading-tight" style={{ fontSize: '0.65rem', letterSpacing: '0.06em' }}>SERVING</p>
+                <p className="font-anton text-[var(--text-muted)] leading-tight" style={{ fontSize: '0.65rem', letterSpacing: '0.06em' }}>NAGALAND</p>
+                <p className="font-poppins text-[var(--text-muted)] uppercase tracking-widest" style={{ fontSize: '0.5rem', marginTop: '2px' }}>Since 1975</p>
               </div>
             </div>
           </div>
@@ -910,33 +985,52 @@ export default function App() {
       </section>
 
       {/* ═══════════════════════ ABOUT ═══════════════════════ */}
-      <section id="about" className="py-24 relative overflow-hidden" style={{ background: "linear-gradient(180deg,#07030f 0%,#0a0516 100%)", paddingBottom: "140px" }}>
+      <section id="about" className="py-24 relative overflow-hidden section-1" style={{ background: "var(--bg-primary)", paddingBottom: "140px" }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col items-center gap-16">
             <div className="max-w-4xl w-full reveal-on-scroll reveal-heading text-center">
               <h2 className="text-clamp-section mb-8 font-anton"><span className="animate-color-flow">A Journey of</span> <span className="animate-color-flow-alt">Service</span></h2>
-              <div className="prose prose-lg max-w-none text-slate-300 font-poppins space-y-6 mx-auto">
+              <div className="prose prose-lg max-w-none text-[var(--text-secondary)] font-poppins space-y-6 mx-auto">
                 <p>Born in Mbaupungwa village, Peren District, Nagaland, T.R. Zeliang is the son of Lt. Rangleu Zeliang. His journey from a remote village to the corridors of power is a testament to his resilience and dedication to the Naga people.</p>
                 <p>Educated at Don Bosco School, Dibrugarh and Kohima College, he entered public life as a student leader, serving as the President of the Zeliangrong Students Union, Kohima. This early involvement in grassroots activism laid the foundation for a political career spanning over four decades.</p>
                 <p>Married to Smti. Kevizenuo, and a father of three, he has balanced his personal life with the immense responsibilities of statecraft. A leader who rose through the ranks, he has served in various capacities — from a Minister of State to the Chief Minister of Nagaland twice.</p>
               </div>
             </div>
             <div className="max-w-5xl w-full reveal-on-scroll">
-              <div className="premium-card p-8" style={{ background:"linear-gradient(135deg,rgba(30,16,58,0.9),rgba(20,8,40,0.95))", border:"1px solid rgba(167,139,250,0.2)", boxShadow:"0 20px 60px rgba(0,0,0,0.6)" }}>
-                <h3 className="font-anton text-2xl mb-8 pb-4 text-center text-white border-b" style={{ borderColor:"rgba(167,139,250,0.15)" }}>Key Information</h3>
-                <ul className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              <div style={{
+                background: 'linear-gradient(135deg, #0d1117 0%, #111827 100%)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '20px',
+                padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div style={{ width: '3px', height: '24px', background: 'var(--accent-gold)', borderRadius: '2px', flexShrink: 0 }} />
+                  <h3 className="font-anton tracking-widest uppercase" style={{ fontSize: 'clamp(0.85rem, 2.5vw, 1.1rem)', color: '#e2e8f0', margin: 0 }}>Key Information</h3>
+                </div>
+                <ul className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                   {[
-                    { icon: <Calendar size={24} />, label: 'Born', value: 'February 21, 1952', id: 'info-born' },
-                    { icon: <MapPin size={24} />, label: 'Constituency', value: 'Peren, Nagaland', id: 'info-constituency' },
-                    { icon: <Shield size={24} />, label: 'Party', value: 'NDPP', id: 'info-party' },
-                    { icon: <GraduationCap size={24} />, label: 'Education', value: 'B.A. Kohima College', id: 'info-education' },
+                    { icon: <Calendar size={16} />, label: 'Born', value: 'February 21, 1952', id: 'info-born' },
+                    { icon: <MapPin size={16} />, label: 'Constituency', value: 'Peren, Nagaland', id: 'info-constituency' },
+                    { icon: <Shield size={16} />, label: 'Party', value: "Naga People's Front", id: 'info-party' },
+                    { icon: <GraduationCap size={16} />, label: 'Education', value: 'B.A. Kohima College', id: 'info-education' },
                   ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 cursor-pointer group" onClick={() => openSubpage(item.id)}>
-                      <div className="w-7 h-7 bg-violet-50 rounded-lg flex items-center justify-center text-violet-500 shrink-0 group-hover:bg-amber-400 group-hover:text-white transition-colors" style={{ fontSize: '14px' }}>{item.icon}</div>
-                      <div className="flex items-baseline gap-1 min-w-0">
-                        <p className="text-[10px] uppercase tracking-wider text-violet-400/60 font-bold font-poppins shrink-0">{item.label}:</p>
-                        <p className="text-xs font-semibold text-white font-poppins truncate group-hover:text-amber-400 transition-colors">{item.value}</p>
+                    <li key={i} className="cursor-pointer" onClick={() => openSubpage(item.id)} style={{
+                      padding: 'clamp(0.75rem, 2vw, 1rem)',
+                      borderRadius: '10px',
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      transition: 'all 0.3s ease',
+                      listStyle: 'none',
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.3)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)'; }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+                        <span style={{ color: 'var(--accent-gold)', opacity: 0.8, flexShrink: 0 }}>{item.icon}</span>
+                        <p className="font-poppins uppercase tracking-widest" style={{ fontSize: '0.55rem', color: 'rgba(148,163,184,0.65)', fontWeight: 700, margin: 0 }}>{item.label}</p>
                       </div>
+                      <p className="font-poppins" style={{ fontSize: 'clamp(0.7rem, 2vw, 0.82rem)', color: '#e2e8f0', fontWeight: 600, margin: 0, lineHeight: 1.35 }}>{item.value}</p>
                     </li>
                   ))}
                 </ul>
@@ -945,14 +1039,16 @@ export default function App() {
             <div className="w-full reveal-on-scroll">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
-                  { target: 2, suffix: 'x', label: 'Chief Minister' },
-                  { target: 40, suffix: '+', label: 'Years in Politics' },
-                  { target: 4, suffix: '', label: 'Assembly Terms' },
-                  { target: 1, suffix: '', label: 'Rajya Sabha MP' },
+                  { target: 2, suffix: 'x', label: 'Chief\nMinister' },
+                  { target: 9, suffix: 'x', label: 'Elected\nRepresentative' },
+                  { target: 1, suffix: '', label: 'Rajya\nSabha MP' },
+                  { target: 40, suffix: '+', label: 'Years in\nPolitics' },
                 ].map((s, i) => (
-                  <div key={i} className="text-center p-6 premium-card">
-                    <p className="counter-stat font-anton text-4xl text-amber-400 mb-2" data-target={s.target} data-suffix={s.suffix}>0</p>
-                    <p className="text-xs uppercase tracking-widest text-violet-300/60 font-semibold font-poppins">{s.label}</p>
+                  <div key={i} className="premium-3d-card" style={{ padding: 'clamp(1rem, 3vw, 1.5rem) 0.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', textAlign: 'center', minHeight: '140px' }}>
+                    <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(255,255,255,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid rgba(255,255,255,0.4)', flexShrink: 0 }}>
+                      <span className="font-anton" style={{ fontSize: 'clamp(1.1rem, 3.5vw, 1.5rem)', lineHeight: 1, color: 'var(--card-accent-dark)' }}>{s.target}{s.suffix}</span>
+                    </div>
+                    <p className="font-poppins uppercase tracking-widest font-bold" style={{ fontSize: 'clamp(0.55rem, 1.8vw, 0.65rem)', margin: 0, lineHeight: 1.4, whiteSpace: 'pre-line' }}>{s.label}</p>
                   </div>
                 ))}
               </div>
@@ -966,33 +1062,35 @@ export default function App() {
         id="journey"
         className="relative overflow-hidden"
         style={{
-          background: 'linear-gradient(160deg, #1a0533 0%, #2d0f5c 30%, #3b0f7a 60%, #2d0f5c 80%, #1a0533 100%)',
+          background: theme === 'dark' ? 'linear-gradient(160deg, #1a0533 0%, #2d0f5c 30%, #3b0f7a 60%, #2d0f5c 80%, #1a0533 100%)' : 'var(--bg-primary)',
           backgroundSize: '300% 300%',
-          animation: 'skyShift 10s ease infinite',
+          animation: theme === 'dark' ? 'skyShift 10s ease infinite' : 'none',
           marginTop: '-80px',
           borderRadius: '60px 60px 0 0',
           paddingTop: '100px',
           paddingBottom: '120px',
           position: 'relative',
           zIndex: 2,
-          boxShadow: '0 -20px 60px rgba(91,33,182,0.3)',
+          boxShadow: theme === 'dark' ? '0 -20px 60px rgba(91,33,182,0.3)' : '0 -20px 60px var(--shadow)',
         }}
       >
         {/* animated flowing waves */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 3, pointerEvents: 'none', overflow: 'hidden', height: '90px' }}>
-          {/* wave 3 - back layer, slowest */}
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow3 9s linear infinite' }}>
-            <path d="M0,45 C180,80 360,10 540,45 C720,80 900,10 1080,45 C1260,80 1350,20 1440,45 L1440,0 L0,0 Z" fill="rgba(10,5,22,0.3)" />
-          </svg>
-          {/* wave 2 - mid layer */}
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow2 6s linear infinite' }}>
-            <path d="M0,55 C200,20 400,70 600,40 C800,10 1000,65 1200,35 C1320,18 1380,50 1440,55 L1440,0 L0,0 Z" fill="rgba(10,5,22,0.55)" />
-          </svg>
-          {/* wave 1 - front layer, fastest */}
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow1 4s linear infinite' }}>
-            <path d="M0,60 C120,30 240,75 360,50 C480,25 600,70 720,45 C840,20 960,65 1080,40 C1200,15 1320,55 1440,60 L1440,0 L0,0 Z" fill="#0a0516" />
-          </svg>
-        </div>
+        {theme === 'dark' && (
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 3, pointerEvents: 'none', overflow: 'hidden', height: '90px' }}>
+            {/* wave 3 - back layer, slowest */}
+            <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow3 9s linear infinite' }}>
+              <path d="M0,45 C180,80 360,10 540,45 C720,80 900,10 1080,45 C1260,80 1350,20 1440,45 L1440,0 L0,0 Z" fill="rgba(10,5,22,0.3)" />
+            </svg>
+            {/* wave 2 - mid layer */}
+            <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow2 6s linear infinite' }}>
+              <path d="M0,55 C200,20 400,70 600,40 C800,10 1000,65 1200,35 C1320,18 1380,50 1440,55 L1440,0 L0,0 Z" fill="rgba(10,5,22,0.55)" />
+            </svg>
+            {/* wave 1 - front layer, fastest */}
+            <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', top: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow1 4s linear infinite' }}>
+              <path d="M0,60 C120,30 240,75 360,50 C480,25 600,70 720,45 C840,20 960,65 1080,40 C1200,15 1320,55 1440,60 L1440,0 L0,0 Z" fill="#0a0516" />
+            </svg>
+          </div>
+        )}
 
         {/* blobs */}
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
@@ -1036,11 +1134,11 @@ export default function App() {
                     {/* shimmer line */}
                     <div style={{ position: 'absolute', top: 0, left: '20px', right: '20px', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.6), transparent)', borderRadius: '1px' }}></div>
                     <span style={{ fontFamily: 'Anton, sans-serif', color: '#7c3aed', fontSize: '1rem', display: 'block', marginBottom: '0.4rem' }}>{item.year}</span>
-                    <h3 style={{ fontFamily: 'Anton, sans-serif', fontSize: '1.15rem', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color:'#f1f0ff' }}>
+                    <h3 style={{ fontFamily: 'Anton, sans-serif', fontSize: '1.15rem', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color:'var(--text-primary)' }}>
                       {item.title}
-                      <ArrowRight size={14} style={{ opacity: hoveredCard === index ? 1 : 0, transition: 'opacity 0.3s', color: '#a78bfa', flexShrink: 0 }} />
+                      <ArrowRight size={14} style={{ opacity: hoveredCard === index ? 1 : 0, transition: 'opacity 0.3s', color: 'var(--accent-gold)', flexShrink: 0 }} />
                     </h3>
-                    <p style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(196,181,253,0.75)', fontSize: '0.85rem', lineHeight: '1.6', margin: 0 }}>{item.desc}</p>
+                    <p style={{ fontFamily: 'Poppins, sans-serif', color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.6', margin: 0 }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -1078,30 +1176,32 @@ export default function App() {
         `}</style>
 
         {/* animated flowing waves — bottom exit, crests up into blue, base flush white */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3, pointerEvents: 'none', overflow: 'hidden', height: '90px' }}>
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow3 9s linear infinite' }}>
-            <path d="M0,45 C180,10 360,80 540,45 C720,10 900,80 1080,45 C1260,10 1350,70 1440,45 L1440,90 L0,90 Z" fill="rgba(7,3,15,0.25)" />
-          </svg>
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow2 6s linear infinite' }}>
-            <path d="M0,55 C200,80 400,20 600,50 C800,80 1000,15 1200,55 C1320,75 1380,35 1440,55 L1440,90 L0,90 Z" fill="rgba(7,3,15,0.55)" />
-          </svg>
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow1 4s linear infinite' }}>
-            <path d="M0,60 C120,80 240,30 360,55 C480,80 600,25 720,50 C840,75 960,20 1080,45 C1200,70 1320,35 1440,60 L1440,90 L0,90 Z" fill="#07030f" />
-          </svg>
-          {/* Extra gradient fade to vision bg */}
-          <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'120px', background:'linear-gradient(180deg, transparent 0%, #07030f 100%)', pointerEvents:'none' }} />
-        </div>
+        {theme === 'dark' && (
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3, pointerEvents: 'none', overflow: 'hidden', height: '90px' }}>
+            <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow3 9s linear infinite' }}>
+              <path d="M0,45 C180,10 360,80 540,45 C720,10 900,80 1080,45 C1260,10 1350,70 1440,45 L1440,90 L0,90 Z" fill="rgba(7,3,15,0.25)" />
+            </svg>
+            <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow2 6s linear infinite' }}>
+              <path d="M0,55 C200,80 400,20 600,50 C800,80 1000,15 1200,55 C1320,75 1380,35 1440,55 L1440,90 L0,90 Z" fill="rgba(7,3,15,0.55)" />
+            </svg>
+            <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ position: 'absolute', bottom: 0, left: 0, width: '200%', height: '90px', animation: 'waveFlow1 4s linear infinite' }}>
+              <path d="M0,60 C120,80 240,30 360,55 C480,80 600,25 720,50 C840,75 960,20 1080,45 C1200,70 1320,35 1440,60 L1440,90 L0,90 Z" fill="#07030f" />
+            </svg>
+            {/* Extra gradient fade to vision bg */}
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'120px', background:'linear-gradient(180deg, transparent 0%, #07030f 100%)', pointerEvents:'none' }} />
+          </div>
+        )}
       </section>
 
       {/* ═══════════════════════ VISION ═══════════════════════ */}
-      <section id="vision" className="py-24 relative" style={{ background: "linear-gradient(180deg,#07030f 0%,#0a0516 60%,#030010 100%)" }}>
+      <section id="vision" className="py-24 relative section-2" style={{ background: "var(--bg-primary)" }}>
         {/* Top blend from timeline */}
-        <div style={{ position:'absolute', top:0, left:0, right:0, height:'80px', background:'linear-gradient(180deg,#07030f 0%,transparent 100%)', pointerEvents:'none', zIndex:1 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'80px', background: theme === 'dark' ? 'linear-gradient(180deg,#07030f 0%,transparent 100%)' : 'transparent', pointerEvents:'none', zIndex:1 }} />
         <div className="max-w-7xl mx-auto px-6" style={{ position:"relative" }}>
           <div data-parallax="0.08" style={{ position:"absolute", top:"-60px", right:"-80px", width:"400px", height:"400px", background:"radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)", borderRadius:"50%", pointerEvents:"none", zIndex:0 }} />
           <div className="text-center mb-20 reveal-on-scroll reveal-heading">
             <h2 className="text-clamp-section mb-4 font-anton"><span className="title-vision">A Vision for </span><span className="title-vision-gold">Nagaland</span></h2>
-            <p className="font-poppins uppercase tracking-widest text-sm" style={{ color:"rgba(196,181,253,0.6)", letterSpacing:"0.25em" }}>Building a stronger, resilient future</p>
+            <p className="font-poppins uppercase tracking-widest text-sm" style={{ color:"var(--text-muted)", letterSpacing:"0.25em" }}>Building a stronger, resilient future</p>
           </div>
           <style>{`
             @keyframes flipInCenter {
@@ -1134,7 +1234,7 @@ export default function App() {
             ].map((pillar, index) => (
               <div
                 key={index}
-                className={`vision-card-${index}`}
+                className={`vision-card-${index} premium-3d-card p-10 text-center cursor-pointer`}
                 ref={el => {
                   if (!el) return;
                   const obs = new IntersectionObserver(([entry]) => {
@@ -1142,71 +1242,40 @@ export default function App() {
                   }, { threshold: 0.15 });
                   obs.observe(el);
                 }}
-                onClick={() => openSubpage(pillar.subpageId)}
-                style={{
-                  cursor: 'pointer', position: 'relative', borderRadius: '22px',
-                  padding: 'clamp(1.4rem, 4vw, 2.8rem)', textAlign: 'center', overflow: 'hidden',
-                  background: '#0d0a1e',
-                  boxShadow: '0 30px 80px rgba(0,10,25,0.9), 0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(167,139,250,0.12)',
-                  transition: 'box-shadow 0.5s cubic-bezier(0.23,1,0.32,1), border 0.5s ease',
-                  border: '1px solid rgba(167,139,250,0.18)',
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 50px 100px rgba(0,10,25,0.95), 0 0 50px rgba(124,58,237,0.25), inset 0 1px 0 rgba(167,139,250,0.3)';
-                  (e.currentTarget as HTMLElement).style.border = '1px solid rgba(167,139,250,0.5)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-8px) scale(1.02)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 30px 80px rgba(0,10,25,0.9), 0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(167,139,250,0.12)';
-                  (e.currentTarget as HTMLElement).style.border = '1px solid rgba(167,139,250,0.18)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0) scale(1)';
-                }}>
-                {/* deep ocean background */}
-                <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg,#0d0a1e 0%,#130a2e 35%,#1a0a4a 65%,#260a6a 100%)', zIndex:0 }}/>
-                {/* wave 1 — deep slow swell */}
-                <div style={{ position:'absolute', bottom:'-8px', left:'-50%', width:'200%', height:'55%', zIndex:1, animation:`oceanSwell1 ${4+index*0.7}s ease-in-out infinite alternate` }}>
-                  <svg viewBox="0 0 800 120" preserveAspectRatio="none" style={{width:'100%',height:'100%'}}>
-                    <path d="M0,70 C100,30 200,95 320,55 C440,15 540,85 660,48 C740,22 780,70 800,55 L800,120 L0,120 Z" fill="rgba(60,20,140,0.75)"/>
-                  </svg>
+                onClick={() => openSubpage(pillar.subpageId)}>
+                <div className="w-16 h-16 rounded-full bg-white/25 flex items-center justify-center mx-auto mb-6 border border-white/40 icon-accent">
+                  <span style={{ color: 'var(--card-accent-dark)' }}>{pillar.icon}</span>
                 </div>
-                {/* wave 2 — mid swell */}
-                <div style={{ position:'absolute', bottom:'-4px', left:'-50%', width:'200%', height:'42%', zIndex:2, animation:`oceanSwell2 ${3+index*0.5}s ease-in-out infinite alternate-reverse` }}>
-                  <svg viewBox="0 0 800 100" preserveAspectRatio="none" style={{width:'100%',height:'100%'}}>
-                    <path d="M0,55 C90,18 180,78 280,42 C380,8 480,68 580,35 C680,8 740,55 800,38 L800,100 L0,100 Z" fill="rgba(90,30,170,0.65)"/>
-                  </svg>
-                </div>
-                {/* wave 3 — surface chop */}
-                <div style={{ position:'absolute', bottom:0, left:'-50%', width:'200%', height:'30%', zIndex:3, animation:`oceanSwell3 ${2+index*0.4}s ease-in-out infinite alternate` }}>
-                  <svg viewBox="0 0 800 80" preserveAspectRatio="none" style={{width:'100%',height:'100%'}}>
-                    <path d="M0,42 C65,12 145,62 225,32 C305,5 390,52 468,26 C548,4 628,46 708,22 C755,8 782,36 800,26 L800,80 L0,80 Z" fill="rgba(124,58,237,0.55)"/>
-                  </svg>
-                </div>
-                {/* surface gloss */}
-                <div style={{ position:'absolute', top:0, left:0, right:0, height:'45%', background:'linear-gradient(180deg,rgba(167,139,250,0.06) 0%,transparent 100%)', zIndex:4, pointerEvents:'none' }}/>
-                {/* icon */}
-                <div style={{ width:'60px', height:'60px', background:'rgba(255,255,255,0.1)', backdropFilter:'blur(12px)', borderRadius:'16px', display:'flex', alignItems:'center', justifyContent:'center', color:'#c4b5fd', margin:'0 auto 1.4rem', border:'1px solid rgba(196,181,253,0.25)', boxShadow:'0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15)', position:'relative', zIndex:5 }}>{pillar.icon}</div>
-                <h3 style={{ fontFamily:'Anton, sans-serif', fontSize:'clamp(1.1rem,3vw,1.5rem)', color:'#ffffff', marginBottom:'0.9rem', textShadow:'0 2px 12px rgba(0,0,0,0.6)', position:'relative', zIndex:5 }}>{pillar.title}</h3>
-                <p style={{ fontFamily:'Poppins, sans-serif', color:'rgba(237,233,254,0.85)', lineHeight:'1.75', fontSize:'clamp(0.78rem,2vw,0.88rem)', position:'relative', zIndex:5 }}>{pillar.desc}</p>
+                <h3 className="font-anton text-2xl mb-4 tracking-wide">{pillar.title}</h3>
+                <p className="font-poppins text-sm leading-relaxed opacity-90">{pillar.desc}</p>
+                <p className="font-poppins text-[10px] tracking-widest mt-6 border-t border-white/20 pt-4 uppercase hover:underline">TAP TO EXPLORE →</p>
               </div>
             ))}
           </div>
           <div className="reveal-on-scroll reveal-fade">
             <div className="max-w-4xl mx-auto px-8 py-4 text-center">
-              <h2 className="font-anton text-clamp-section leading-tight">"TOGETHER WE CAN BUILD A SOCIETY THAT IS STRONG, RESILIENT, JUST, INCLUSIVE AND PROSPEROUS."</h2>
+              <h2 className="font-anton text-clamp-section leading-tight" style={{
+                background: 'linear-gradient(90deg, #ffffff 0%, #f59e0b 10%, #d4a843 18%, #4a90d9 28%, #8b5cf6 38%, #3a9e6a 48%, #c94060 58%, #d4732a 68%, #f59e0b 78%, #4a90d9 88%, #ffffff 100%)',
+                backgroundSize: '300% auto',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                animation: 'quoteColorFlow 8s ease infinite',
+              }}>"TOGETHER WE CAN BUILD A SOCIETY THAT IS STRONG, RESILIENT, JUST, INCLUSIVE AND PROSPEROUS."</h2>
             </div>
           </div>
         </div>
       </section>
 
       {/* ═══════════════════════ INITIATIVES ═══════════════════════ */}
-      <section id="initiatives" className="py-24" style={{ background:"linear-gradient(180deg,#0a0516 0%,#07030f 100%)" }}>
+      <section id="initiatives" className="py-24 section-3" style={{ background: "var(--bg-secondary)" }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal-on-scroll reveal-heading">
             <div>
-              <h2 className="font-anton text-clamp-section">Key <span className="text-amber-400">Initiatives</span></h2>
-              <p className="font-poppins text-violet-300/50 mt-2">Strategic portfolios for state transformation</p>
+              <h2 className="font-anton text-clamp-section text-[var(--text-primary)]">Key <span className="text-[var(--accent-gold)]">Initiatives</span></h2>
+              <p className="font-poppins text-[var(--text-muted)] mt-2">Strategic portfolios for state transformation</p>
             </div>
-            <div className="hidden md:block w-32 h-px bg-amber-400"></div>
+            <div className="hidden md:block w-32 h-px bg-[var(--accent-gold)]"></div>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto md:max-w-none">
             {[
@@ -1215,11 +1284,13 @@ export default function App() {
               { title: 'Agriculture & Allied Sectors', desc: 'Promoting rural livelihoods and food security by empowering farmers with modern technology and market linkages.', icon: <Users /> },
               { title: 'Education & Skill Development', desc: 'Investing in Nagaland\'s human capital by modernizing schools and creating vocational training centers for the youth.', icon: <GraduationCap /> },
             ].map((item, index) => (
-              <div key={index} className="premium-card flex gap-4 items-start group hover:-translate-y-2 reveal-on-scroll" style={{ padding: 'clamp(1rem, 3vw, 2rem)' }}>
-                <div className="w-11 h-11 bg-violet-700 text-white rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300" style={{ fontSize: '18px' }}>{item.icon}</div>
+              <div key={index} className="premium-3d-card flex gap-6 items-start p-8 cursor-pointer reveal-on-scroll" onClick={() => {}}>
+                <div className="w-14 h-14 rounded-full bg-white/25 flex items-center justify-center shrink-0 border border-white/40 icon-accent">
+                  <span style={{ color: 'var(--card-accent-dark)' }}>{item.icon}</span>
+                </div>
                 <div>
-                  <h3 className="font-anton mb-2" style={{ fontSize: 'clamp(1rem, 3vw, 1.4rem)' }}>{item.title}</h3>
-                  <p className="font-poppins text-slate-300 leading-relaxed" style={{ fontSize: 'clamp(0.78rem, 2vw, 0.95rem)' }}>{item.desc}</p>
+                  <h3 className="font-anton mb-2 tracking-wide" style={{ fontSize: 'clamp(1.1rem, 3vw, 1.4rem)' }}>{item.title}</h3>
+                  <p className="font-poppins text-sm leading-relaxed opacity-90">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -1228,27 +1299,27 @@ export default function App() {
       </section>
 
       {/* ═══════════════════════ ACHIEVEMENTS ═══════════════════════ */}
-      <section id="achievements" className="py-28 text-navy" style={{ position:'relative', overflow:'hidden', background:'linear-gradient(180deg, #00000f 0%, #01010f 30%, #000005 60%, #000000 100%)' }}>
+      <section id="achievements" className="py-28 text-navy section-4" style={{ position:'relative', overflow:'hidden', background: theme === 'dark' ? 'linear-gradient(180deg, #00000f 0%, #01010f 30%, #000005 60%, #000000 100%)' : 'var(--bg-primary)' }}>
         {/* Starfield layer 1 — tiny distant stars */}
-        <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 22% 8%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 35% 25%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 48% 5%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 58% 18%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 70% 12%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 82% 28%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 91% 7%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 15% 42%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 27% 55%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 40% 38%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 53% 62%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 65% 45%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 77% 58%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 88% 40%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 5% 72%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 18% 80%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 32% 88%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 44% 75%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 56% 82%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 68% 90%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 79% 70%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 93% 85%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 3% 33%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 97% 50%, rgba(255,255,255,0.6) 0%, transparent 100%)`, pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 22% 8%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 35% 25%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 48% 5%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 58% 18%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 70% 12%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 82% 28%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 91% 7%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 15% 42%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 27% 55%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 40% 38%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 53% 62%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 65% 45%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 77% 58%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 88% 40%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 5% 72%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 18% 80%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 32% 88%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 44% 75%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 56% 82%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 68% 90%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 79% 70%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 93% 85%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 3% 33%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 97% 50%, rgba(255,255,255,0.6) 0%, transparent 100%)`, pointerEvents:'none', zIndex:0 }} />}
         {/* Starfield layer 2 — medium stars with slight twinkle */}
-        <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1.5px 1.5px at 8% 20%, rgba(255,255,240,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 25% 35%, rgba(200,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 42% 10%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 60% 30%, rgba(255,240,220,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 75% 22%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 90% 15%, rgba(220,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 12% 60%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 38% 68%, rgba(200,230,255,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 55% 52%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 72% 75%, rgba(255,248,230,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 85% 62%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 20% 88%, rgba(220,210,255,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 48% 92%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 65% 85%, rgba(255,255,240,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 95% 78%, rgba(255,255,255,1) 0%, transparent 100%)`, animation:'starTwinkle1 4s ease-in-out infinite alternate', pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1.5px 1.5px at 8% 20%, rgba(255,255,240,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 25% 35%, rgba(200,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 42% 10%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 60% 30%, rgba(255,240,220,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 75% 22%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 90% 15%, rgba(220,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 12% 60%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 38% 68%, rgba(200,230,255,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 55% 52%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 72% 75%, rgba(255,248,230,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 85% 62%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 20% 88%, rgba(220,210,255,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 48% 92%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 65% 85%, rgba(255,255,240,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 95% 78%, rgba(255,255,255,1) 0%, transparent 100%)`, animation:'starTwinkle1 4s ease-in-out infinite alternate', pointerEvents:'none', zIndex:0 }} />}
         {/* Starfield layer 3 — bright large stars */}
-        <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(2px 2px at 15% 12%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 33% 48%, rgba(255,248,200,1) 0%, rgba(255,248,200,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 50% 20%, rgba(200,220,255,1) 0%, rgba(200,220,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 67% 65%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 84% 35%, rgba(255,240,180,1) 0%, rgba(255,240,180,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 6% 78%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 92% 55%, rgba(210,200,255,1) 0%, rgba(210,200,255,0.3) 40%, transparent 100%), radial-gradient(3px 3px at 28% 22%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.2) 50%, transparent 100%), radial-gradient(3px 3px at 73% 80%, rgba(255,248,220,1) 0%, rgba(255,248,220,0.2) 50%, transparent 100%), radial-gradient(3px 3px at 45% 90%, rgba(200,230,255,1) 0%, rgba(200,230,255,0.2) 50%, transparent 100%)`, animation:'starTwinkle2 6s ease-in-out infinite alternate-reverse', pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(2px 2px at 15% 12%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 33% 48%, rgba(255,248,200,1) 0%, rgba(255,248,200,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 50% 20%, rgba(200,220,255,1) 0%, rgba(200,220,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 67% 65%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 84% 35%, rgba(255,240,180,1) 0%, rgba(255,240,180,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 6% 78%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 40%, transparent 100%), radial-gradient(2px 2px at 92% 55%, rgba(210,200,255,1) 0%, rgba(210,200,255,0.3) 40%, transparent 100%), radial-gradient(3px 3px at 28% 22%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.2) 50%, transparent 100%), radial-gradient(3px 3px at 73% 80%, rgba(255,248,220,1) 0%, rgba(255,248,220,0.2) 50%, transparent 100%), radial-gradient(3px 3px at 45% 90%, rgba(200,230,255,1) 0%, rgba(200,230,255,0.2) 50%, transparent 100%)`, animation:'starTwinkle2 6s ease-in-out infinite alternate-reverse', pointerEvents:'none', zIndex:0 }} />}
         {/* Milky way nebula glow — subtle purple/blue haze */}
-        <div style={{ position:'absolute', top:'15%', left:'-10%', width:'70%', height:'60%', background:'radial-gradient(ellipse at center, rgba(80,40,160,0.12) 0%, rgba(40,20,100,0.06) 50%, transparent 75%)', transform:'rotate(-15deg)', pointerEvents:'none', zIndex:0 }} />
-        <div style={{ position:'absolute', bottom:'5%', right:'-5%', width:'50%', height:'50%', background:'radial-gradient(ellipse at center, rgba(60,30,140,0.1) 0%, rgba(20,10,80,0.05) 50%, transparent 75%)', transform:'rotate(10deg)', pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', top:'15%', left:'-10%', width:'70%', height:'60%', background:'radial-gradient(ellipse at center, rgba(80,40,160,0.12) 0%, rgba(40,20,100,0.06) 50%, transparent 75%)', transform:'rotate(-15deg)', pointerEvents:'none', zIndex:0 }} />}
+        {theme === 'dark' && <div style={{ position:'absolute', bottom:'5%', right:'-5%', width:'50%', height:'50%', background:'radial-gradient(ellipse at center, rgba(60,30,140,0.1) 0%, rgba(20,10,80,0.05) 50%, transparent 75%)', transform:'rotate(10deg)', pointerEvents:'none', zIndex:0 }} />}
         {/* Shooting star */}
-        <div style={{ position:'absolute', top:'18%', left:'-5%', width:'200px', height:'1px', background:'linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)', transform:'rotate(-20deg)', animation:'shootingStar 8s linear infinite', pointerEvents:'none', zIndex:0 }} />
-        <div style={{ position:'absolute', top:'45%', right:'-5%', width:'150px', height:'1px', background:'linear-gradient(270deg, transparent, rgba(255,248,200,0.7), transparent)', transform:'rotate(-15deg)', animation:'shootingStar2 12s linear infinite 4s', pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', top:'18%', left:'-5%', width:'200px', height:'1px', background:'linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)', transform:'rotate(-20deg)', animation:'shootingStar 8s linear infinite', pointerEvents:'none', zIndex:0 }} />}
+        {theme === 'dark' && <div style={{ position:'absolute', top:'45%', right:'-5%', width:'150px', height:'1px', background:'linear-gradient(270deg, transparent, rgba(255,248,200,0.7), transparent)', transform:'rotate(-15deg)', animation:'shootingStar2 12s linear infinite 4s', pointerEvents:'none', zIndex:0 }} />}
         {/* Top fade from initiatives section */}
-        <div style={{ position:'absolute', top:0, left:0, right:0, height:'120px', background:'linear-gradient(180deg, #07030f 0%, transparent 100%)', pointerEvents:'none', zIndex:1 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'120px', background: theme === 'dark' ? 'linear-gradient(180deg, #07030f 0%, transparent 100%)' : 'transparent', pointerEvents:'none', zIndex:1 }} />
 
         <div className="max-w-7xl mx-auto px-6" style={{ position:'relative', zIndex:1 }}>
           <div className="text-center mb-16 reveal-on-scroll reveal-heading">
-            <p className="font-poppins text-xs uppercase tracking-[0.3em] mb-3 text-dark-muted">A life in service</p>
-            <h2 className="font-anton mb-4" style={{ fontSize:'clamp(2rem,6vw,3.5rem)', letterSpacing:'0.02em' }}><span className="title-milestone">MILESTONES OF </span><span className="title-milestone-accent">SERVICE</span></h2>
-            <div style={{ width:'60px', height:'3px', background:'linear-gradient(90deg,#7c3aed,#a78bfa)', margin:'0 auto', borderRadius:'2px' }} />
+            <p className="font-poppins text-xs uppercase tracking-[0.3em] mb-3 text-[var(--text-muted)]">A life in service</p>
+            <h2 className="font-anton mb-4" style={{ fontSize:'clamp(2rem,6vw,3.5rem)', letterSpacing:'0.02em', color: 'var(--text-primary)' }}><span className="title-milestone">MILESTONES OF </span><span className="title-milestone-accent">SERVICE</span></h2>
+            <div style={{ width:'60px', height:'3px', background: 'var(--accent-gold)', margin:'0 auto', borderRadius:'2px' }} />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
@@ -1262,39 +1333,14 @@ export default function App() {
               { label:'Naga Resolution', sub:'Lifelong advocate', id:'achievement-naga', num:'☮' },
               { label:'NE Development', sub:'Champion of the region', id:'achievement-ne', num:'NE' },
             ].map((item, index) => (
-              <div key={index} onClick={() => openSubpage(item.id)} className="reveal-on-scroll reveal-zoom cursor-pointer" style={{
-                position:'relative', borderRadius:'16px', padding:'1.4rem 1rem 1.2rem',
-                background:'linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)',
-                border:'1px solid rgba(167,139,250,0.18)',
-                backdropFilter:'blur(12px)',
-                boxShadow:'0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-                transform:'perspective(600px) rotateX(4deg)',
-                transition:'all 0.4s cubic-bezier(0.23,1,0.32,1)',
-                textAlign:'center',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.transform = 'perspective(600px) rotateX(0deg) translateY(-10px) scale(1.03)';
-                el.style.boxShadow = '0 24px 60px rgba(124,58,237,0.25), 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2)';
-                el.style.border = '1px solid rgba(167,139,250,0.5)';
-                el.style.background = 'linear-gradient(145deg, rgba(124,58,237,0.15) 0%, rgba(167,139,250,0.07) 100%)';
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.transform = 'perspective(600px) rotateX(4deg)';
-                el.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
-                el.style.border = '1px solid rgba(167,139,250,0.18)';
-                el.style.background = 'linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)';
-              }}>
-                {/* Top glow line */}
-                <div style={{ position:'absolute', top:0, left:'20%', right:'20%', height:'2px', background:'linear-gradient(90deg,transparent,rgba(167,139,250,0.8),transparent)', borderRadius:'1px' }} />
+              <div key={index} onClick={() => openSubpage(item.id)} className="reveal-on-scroll reveal-zoom cursor-pointer premium-3d-card text-center" style={{ padding: 'clamp(1rem, 3vw, 2rem)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
                 {/* Number badge */}
-                <div style={{ width:'52px', height:'52px', margin:'0 auto 0.9rem', borderRadius:'14px', background:'linear-gradient(135deg,rgba(124,58,237,0.25),rgba(167,139,250,0.12))', border:'1px solid rgba(167,139,250,0.3)', display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 16px rgba(124,58,237,0.2), inset 0 1px 0 rgba(255,255,255,0.15)' }}>
-                  <span style={{ fontFamily:'Anton,sans-serif', color:'#c4b5fd', fontSize:'1rem', letterSpacing:'0.02em' }}>{item.num}</span>
+                <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '1.5px solid rgba(255,255,255,0.4)' }}>
+                  <span className="font-anton" style={{ fontSize: 'clamp(0.85rem, 2.5vw, 1.1rem)', color: 'var(--card-accent-dark)', lineHeight: 1 }}>{item.num}</span>
                 </div>
-                <p style={{ fontFamily:'Anton,sans-serif', fontSize:'clamp(0.7rem,2vw,0.85rem)', letterSpacing:'0.05em', lineHeight:1.2, marginBottom:'0.3rem', textTransform:'uppercase', background:'linear-gradient(135deg,#fff 0%,#ede9fe 60%,#c4b5fd 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{item.label}</p>
-                <p style={{ fontFamily:'Poppins,sans-serif', fontSize:'0.65rem', letterSpacing:'0.04em', background:'linear-gradient(90deg,rgba(237,233,254,0.7),rgba(196,181,253,0.5))', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{item.sub}</p>
-                <p style={{ fontFamily:'Poppins,sans-serif', fontSize:'0.6rem', marginTop:'0.6rem', letterSpacing:'0.08em', background:'linear-gradient(90deg,#a78bfa,#c4b5fd)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>TAP TO EXPLORE →</p>
+                <h4 className="font-anton tracking-wider uppercase" style={{ fontSize: 'clamp(0.7rem, 2.2vw, 1rem)', lineHeight: 1.25, margin: '0.25rem 0', wordBreak: 'break-word', hyphens: 'auto' }}>{item.label}</h4>
+                <p className="font-poppins opacity-90" style={{ fontSize: 'clamp(0.6rem, 1.8vw, 0.75rem)', lineHeight: 1.4, margin: 0 }}>{item.sub}</p>
+                <p className="font-poppins tracking-widest uppercase" style={{ fontSize: '0.55rem', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '0.6rem', marginTop: '0.25rem', width: '100%' }}>TAP TO EXPLORE →</p>
               </div>
             ))}
           </div>
@@ -1302,12 +1348,12 @@ export default function App() {
       </section>
 
       {/* ═══════════════════════ VALUES ═══════════════════════ */}
-      <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #000000 0%, #00000a 50%, #00000f 100%)' }}>
+      <section className="py-24 relative overflow-hidden section-2" style={{ background: theme === 'dark' ? 'linear-gradient(180deg, #000000 0%, #00000a 50%, #00000f 100%)' : 'var(--bg-primary)' }}>
         {/* Continuous starfield — same stars as achievements for seamless sky */}
-        <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1px 1px at 5% 10%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 18% 28%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 30% 5%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 44% 18%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 67% 8%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 78% 22%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 90% 14%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 12% 50%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 25% 65%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 38% 42%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 52% 78%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 63% 55%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 76% 70%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 88% 45%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 7% 82%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 21% 92%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 35% 85%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 48% 95%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 60% 88%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 72% 92%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 84% 80%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 95% 90%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 2% 38%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 97% 60%, rgba(255,255,255,0.6) 0%, transparent 100%)`, pointerEvents:'none', zIndex:0 }} />
-        <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1.5px 1.5px at 9% 25%, rgba(255,255,240,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 28% 40%, rgba(200,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 45% 12%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 62% 55%, rgba(255,240,220,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 80% 30%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 14% 68%, rgba(220,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 40% 75%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 70% 85%, rgba(200,230,255,0.9) 0%, transparent 100%), radial-gradient(2px 2px at 22% 15%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.2) 50%, transparent 100%), radial-gradient(2px 2px at 58% 32%, rgba(255,248,200,1) 0%, rgba(255,248,200,0.2) 50%, transparent 100%), radial-gradient(2px 2px at 85% 65%, rgba(200,220,255,1) 0%, rgba(200,220,255,0.2) 50%, transparent 100%), radial-gradient(3px 3px at 50% 50%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.15) 50%, transparent 100%)`, animation:'starTwinkle1 5s ease-in-out infinite alternate', pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1px 1px at 5% 10%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 18% 28%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 30% 5%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 44% 18%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 67% 8%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 78% 22%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 90% 14%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 12% 50%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 25% 65%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 38% 42%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 52% 78%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 63% 55%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 76% 70%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 88% 45%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 7% 82%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 21% 92%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 35% 85%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 48% 95%, rgba(255,255,255,0.9) 0%, transparent 100%), radial-gradient(1px 1px at 60% 88%, rgba(255,255,255,0.75) 0%, transparent 100%), radial-gradient(1px 1px at 72% 92%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 84% 80%, rgba(255,255,255,0.65) 0%, transparent 100%), radial-gradient(1px 1px at 95% 90%, rgba(255,255,255,0.85) 0%, transparent 100%), radial-gradient(1px 1px at 2% 38%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 97% 60%, rgba(255,255,255,0.6) 0%, transparent 100%)`, pointerEvents:'none', zIndex:0 }} />}
+        {theme === 'dark' && <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1.5px 1.5px at 9% 25%, rgba(255,255,240,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 28% 40%, rgba(200,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 45% 12%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 62% 55%, rgba(255,240,220,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 80% 30%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 14% 68%, rgba(220,220,255,0.95) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 40% 75%, rgba(255,255,255,1) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 70% 85%, rgba(200,230,255,0.9) 0%, transparent 100%), radial-gradient(2px 2px at 22% 15%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.2) 50%, transparent 100%), radial-gradient(2px 2px at 58% 32%, rgba(255,248,200,1) 0%, rgba(255,248,200,0.2) 50%, transparent 100%), radial-gradient(2px 2px at 85% 65%, rgba(200,220,255,1) 0%, rgba(200,220,255,0.2) 50%, transparent 100%), radial-gradient(3px 3px at 50% 50%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.15) 50%, transparent 100%)`, animation:'starTwinkle1 5s ease-in-out infinite alternate', pointerEvents:'none', zIndex:0 }} />}
         {/* Faint nebula glow */}
-        <div style={{ position:'absolute', top:'-20%', right:'-10%', width:'60%', height:'80%', background:'radial-gradient(ellipse at center, rgba(60,20,120,0.08) 0%, transparent 70%)', transform:'rotate(12deg)', pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', top:'-20%', right:'-10%', width:'60%', height:'80%', background:'radial-gradient(ellipse at center, rgba(60,20,120,0.08) 0%, transparent 70%)', transform:'rotate(12deg)', pointerEvents:'none', zIndex:0 }} />}
         <div className="max-w-7xl mx-auto px-6 relative" style={{ zIndex:1 }}>
           <div className="grid md:grid-cols-3 gap-12">
             {[
@@ -1315,13 +1361,10 @@ export default function App() {
               { title: 'Unity', id: 'value-unity', desc: 'Bringing together diverse voices and tribes to work towards a common goal of a peaceful and prosperous Nagaland.' },
               { title: 'Progress', id: 'value-progress', desc: 'A relentless drive to modernize infrastructure, economy, and social systems while preserving our rich heritage.' },
             ].map((value, index) => (
-              <div key={index} className="reveal-on-scroll cursor-pointer group" onClick={() => openSubpage(value.id)}
-                style={{ transition: 'transform 0.3s ease' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'}>
-                <h3 className="font-anton text-3xl mb-6 flex items-center gap-4 text-white group-hover:text-amber-400 transition-colors duration-300">{value.title}<span className="flex-1 h-px bg-white/10 group-hover:bg-amber-400/50 transition-colors duration-300"></span></h3>
-                <p className="font-poppins text-slate-400 leading-relaxed text-lg">{value.desc}</p>
-                <p className="font-poppins text-xs text-amber-400 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Read more →</p>
+              <div key={index} className="reveal-on-scroll cursor-pointer premium-3d-card p-10 text-center" onClick={() => openSubpage(value.id)}>
+                <h3 className="font-anton text-3xl mb-6 tracking-wide">{value.title}</h3>
+                <p className="font-poppins leading-relaxed text-lg opacity-90">{value.desc}</p>
+                <p className="font-poppins text-[10px] tracking-widest mt-8 border-t border-white/20 pt-4 uppercase hover:underline">Read more →</p>
               </div>
             ))}
           </div>
@@ -1329,44 +1372,76 @@ export default function App() {
       </section>
 
       {/* ═══════════════════════ CONTACT ═══════════════════════ */}
-      <section id="contact" className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #00000f 0%, #030010 60%, #07030f 100%)' }}>
+      <section id="contact" className="py-24 relative overflow-hidden section-3" style={{ background: theme === 'dark' ? 'linear-gradient(180deg, #00000f 0%, #030010 60%, #07030f 100%)' : 'var(--bg-secondary)' }}>
         {/* Sparse star layer for contact */}
-        <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1px 1px at 8% 20%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 20% 60%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 65% 75%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 78% 25%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 92% 55%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 14% 80%, rgba(255,248,220,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 55% 90%, rgba(200,220,255,0.85) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 88% 10%, rgba(255,255,255,1) 0%, transparent 100%)`, pointerEvents:'none', zIndex:0 }} />
+        {theme === 'dark' && <div style={{ position:'absolute', inset:0, backgroundImage:`radial-gradient(1px 1px at 8% 20%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 20% 60%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.6) 0%, transparent 100%), radial-gradient(1px 1px at 65% 75%, rgba(255,255,255,0.7) 0%, transparent 100%), radial-gradient(1px 1px at 78% 25%, rgba(255,255,255,0.5) 0%, transparent 100%), radial-gradient(1px 1px at 92% 55%, rgba(255,255,255,0.8) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 14% 80%, rgba(255,248,220,0.9) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 55% 90%, rgba(200,220,255,0.85) 0%, transparent 100%), radial-gradient(1.5px 1.5px at 88% 10%, rgba(255,255,255,1) 0%, transparent 100%)`, pointerEvents:'none', zIndex:0 }} />}
         <div className="max-w-7xl mx-auto px-6 relative" style={{ zIndex:1 }}>
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div className="reveal-on-scroll reveal-left">
-              <h2 className="font-anton text-clamp-section mb-8 text-white">Connect with the <span className="text-amber-400">Office</span></h2>
-              <div className="premium-card p-8 mb-8" style={{ background:"linear-gradient(135deg,rgba(20,8,40,0.9),rgba(13,4,26,0.95))", border:"1px solid rgba(167,139,250,0.15)" }}>
-                <ul className="space-y-8">
-                  {[
-                    { icon: <MapPin size={24} />, title: 'Office Address', value: "Old Minister's Hill, Kohima, Nagaland" },
-                    { icon: <Briefcase size={24} />, title: 'Constituency', value: 'Peren District, Nagaland' },
-                    { icon: <Shield size={24} />, title: 'Political Party', value: 'Nationalist Democratic Progressive Party (NDPP)' },
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-6">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{ background:"rgba(124,58,237,0.2)", color:"#a78bfa", border:"1px solid rgba(167,139,250,0.25)" }}>{item.icon}</div>
-                      <div>
-                        <h4 className="font-anton text-xl mb-1 text-white">{item.title}</h4>
-                        <p className="font-poppins text-slate-300">{item.value}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+              <h2 className="font-anton text-clamp-section mb-8 text-[var(--text-primary)]">Connect with the <span className="text-[var(--accent-gold)]">Office</span></h2>
+              <div className="space-y-6">
+                {[
+                  { icon: <MapPin size={24} />, title: 'Office Address', value: "Old Minister's Hill, Kohima, Nagaland", rowClass: 'office-row-1' },
+                  { icon: <Briefcase size={24} />, title: 'Constituency', value: 'Peren District, Nagaland', rowClass: 'office-row-2' },
+                  { icon: <Shield size={24} />, title: 'Political Party', value: 'Naga People\'s Front (NPF)', rowClass: 'office-row-3' },
+                ].map((item, i) => (
+                  <div key={i} className={`premium-3d-card p-6 flex items-start gap-6 ${item.rowClass}`}>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 icon-accent">
+                      <span style={{ color: 'var(--card-accent-dark)' }}>{item.icon}</span>
+                    </div>
+                    <div>
+                      <h4 className="font-anton text-xl mb-1">{item.title}</h4>
+                      <p className="font-poppins text-sm">{item.value}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex gap-4 justify-center md:justify-start">
-                <a href="#" className="w-12 h-12 bg-violet-700 text-white rounded-full flex items-center justify-center hover:bg-violet-400 transition-all duration-300"><Facebook size={20} /></a>
-                <a href="#" className="w-12 h-12 bg-violet-700 text-white rounded-full flex items-center justify-center hover:bg-violet-400 transition-all duration-300"><Twitter size={20} /></a>
+              <div className="flex gap-4 justify-center md:justify-start mt-10 pt-4">
+                <a href="https://www.facebook.com/TRZeliang/" target="_blank" rel="noopener noreferrer" style={{
+                  width: '48px', height: '48px', borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: 'linear-gradient(145deg, #1877f2, #0d5abf)',
+                  boxShadow: '0 4px 15px rgba(24,119,242,0.5), inset 0 1px 0 rgba(255,255,255,0.35)',
+                  border: '1.5px solid rgba(255,255,255,0.25)',
+                  position: 'relative', overflow: 'hidden',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px) scale(1.08)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 25px rgba(24,119,242,0.7), inset 0 1px 0 rgba(255,255,255,0.45)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0) scale(1)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 15px rgba(24,119,242,0.5), inset 0 1px 0 rgba(255,255,255,0.35)'; }}>
+                  <span style={{ position:'absolute', top:0, left:0, width:'65%', height:'55%', background:'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, transparent 70%)', borderRadius:'50% 0 0 0', pointerEvents:'none' }} />
+                  <Facebook size={20} color="white" />
+                </a>
+                <a href="https://www.instagram.com/trzeliang?igsh=ZTM1aTNrcWg5Y3dr" target="_blank" rel="noopener noreferrer" style={{
+                  width: '48px', height: '48px', borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: 'linear-gradient(145deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888)',
+                  boxShadow: '0 4px 15px rgba(220,39,67,0.5), inset 0 1px 0 rgba(255,255,255,0.35)',
+                  border: '1.5px solid rgba(255,255,255,0.25)',
+                  position: 'relative', overflow: 'hidden',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px) scale(1.08)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 25px rgba(220,39,67,0.7), inset 0 1px 0 rgba(255,255,255,0.45)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0) scale(1)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 15px rgba(220,39,67,0.5), inset 0 1px 0 rgba(255,255,255,0.35)'; }}>
+                  <span style={{ position:'absolute', top:0, left:0, width:'65%', height:'55%', background:'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, transparent 70%)', borderRadius:'50% 0 0 0', pointerEvents:'none' }} />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="17.5" cy="6.5" r="0.5" fill="white" stroke="none"/>
+                  </svg>
+                </a>
               </div>
             </div>
             <div className="reveal-on-scroll reveal-right">
-              <div className="premium-card p-10" style={{ background:"linear-gradient(135deg,rgba(20,8,40,0.9),rgba(13,4,26,0.95))", border:"1px solid rgba(167,139,250,0.15)" }}>
-                <h3 className="font-anton text-2xl mb-8 text-white">Send a Message</h3>
+              <div className="premium-3d-card p-10" style={{ border: "1px solid var(--border)" }}>
+                <h3 className="font-anton text-2xl mb-8" style={{ color: '#ffffff' }}>Send a Message</h3>
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                  <input type="text" placeholder="Your Name" className="w-full bg-transparent border-b border-violet-700/30 py-4 outline-none transition-colors duration-300 font-poppins text-slate-200 placeholder:text-slate-500 focus:border-amber-400" />
-                  <input type="email" placeholder="Your Email" className="w-full bg-transparent border-b border-violet-700/30 py-4 outline-none transition-colors duration-300 font-poppins text-slate-200 placeholder:text-slate-500 focus:border-amber-400" />
-                  <input type="text" placeholder="Subject" className="w-full bg-transparent border-b border-violet-700/30 py-4 outline-none transition-colors duration-300 font-poppins text-slate-200 placeholder:text-slate-500 focus:border-amber-400" />
-                  <textarea placeholder="Your Message" rows={4} className="w-full bg-transparent border-b border-violet-700/30 py-4 outline-none transition-colors duration-300 font-poppins text-slate-200 placeholder:text-slate-500 focus:border-amber-400 resize-none"></textarea>
-                  <button type="submit" className="w-full mt-4 font-anton uppercase tracking-widest py-3 px-6 rounded-lg text-white cursor-pointer transition-all duration-300 hover:-translate-y-1" style={{ background:"linear-gradient(135deg,#7c3aed 0%,#6d28d9 50%,#5b21b6 100%)", boxShadow:"0 4px 20px rgba(124,58,237,0.4)" }}>Submit Message</button>
+                  <input type="text" placeholder="Your Name" className="contact-input w-full bg-transparent py-4 outline-none transition-colors duration-300 font-poppins" style={{ borderBottom: '1px solid rgba(255,255,255,0.4)', color: '#ffffff', caretColor: '#ffffff' }} onFocus={e => (e.target as HTMLInputElement).style.borderBottomColor = 'rgba(255,255,255,0.9)'} onBlur={e => (e.target as HTMLInputElement).style.borderBottomColor = 'rgba(255,255,255,0.4)'} />
+                  <input type="email" placeholder="Your Email" className="contact-input w-full bg-transparent py-4 outline-none transition-colors duration-300 font-poppins" style={{ borderBottom: '1px solid rgba(255,255,255,0.4)', color: '#ffffff', caretColor: '#ffffff' }} onFocus={e => (e.target as HTMLInputElement).style.borderBottomColor = 'rgba(255,255,255,0.9)'} onBlur={e => (e.target as HTMLInputElement).style.borderBottomColor = 'rgba(255,255,255,0.4)'} />
+                  <input type="text" placeholder="Subject" className="contact-input w-full bg-transparent py-4 outline-none transition-colors duration-300 font-poppins" style={{ borderBottom: '1px solid rgba(255,255,255,0.4)', color: '#ffffff', caretColor: '#ffffff' }} onFocus={e => (e.target as HTMLInputElement).style.borderBottomColor = 'rgba(255,255,255,0.9)'} onBlur={e => (e.target as HTMLInputElement).style.borderBottomColor = 'rgba(255,255,255,0.4)'} />
+                  <textarea placeholder="Your Message" rows={4} className="contact-input w-full bg-transparent py-4 outline-none transition-colors duration-300 font-poppins resize-none" style={{ borderBottom: '1px solid rgba(255,255,255,0.4)', color: '#ffffff', caretColor: '#ffffff' }} onFocus={e => (e.target as HTMLTextAreaElement).style.borderBottomColor = 'rgba(255,255,255,0.9)'} onBlur={e => (e.target as HTMLTextAreaElement).style.borderBottomColor = 'rgba(255,255,255,0.4)'}></textarea>
+                  <button type="submit" className="w-full mt-4 font-anton uppercase tracking-widest py-3 px-6 rounded-lg text-white cursor-pointer transition-all duration-300 hover:-translate-y-1" style={{ background: "var(--accent-gold)", boxShadow: "0 4px 20px var(--shadow)" }}>Submit Message</button>
                 </form>
               </div>
             </div>
@@ -1375,27 +1450,27 @@ export default function App() {
       </section>
 
       {/* ═══════════════════════ FOOTER ═══════════════════════ */}
-      <footer className="bg-gradient-to-b from-violet-50 to-white text-slate-300 py-12 border-t border-violet-200">
+      <footer className="py-12 border-t" style={{ background: "var(--bg-secondary)", borderColor: "var(--border)" }}>
         <div className="max-w-7xl mx-auto px-6 text-center">
           {/* Name & title */}
-          <h2 className="font-anton text-3xl text-violet-600 mb-1">T.R. ZELIANG</h2>
-          <p className="font-poppins text-sm text-violet-300/60 tracking-widest uppercase mb-8">Deputy Chief Minister, Nagaland</p>
+          <h2 className="font-anton text-3xl text-[var(--accent-gold)] mb-1">T.R. ZELIANG</h2>
+          <p className="font-poppins text-sm text-[var(--text-muted)] tracking-widest uppercase mb-8">Deputy Chief Minister, Nagaland</p>
           {/* Nav links */}
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             {navLinks.map((link) => (
-              <button key={link.name} onClick={() => openSubpage(link.id, false)} className="font-poppins text-navy/60 hover:text-violet-600 transition-colors text-xs uppercase tracking-widest cursor-pointer">
+              <button key={link.name} onClick={() => openSubpage(link.id, false)} className="font-poppins text-[var(--text-secondary)] hover:text-[var(--accent-gold)] transition-colors text-xs uppercase tracking-widest cursor-pointer">
                 {link.name}
               </button>
             ))}
           </div>
           {/* Copyright */}
-          <p className="font-poppins text-slate-500 text-xs mb-3">© 2026 Office of T.R. Zeliang. All rights reserved.</p>
+          <p className="font-poppins text-[var(--text-muted)] text-xs mb-3">© 2026 Office of T.R. Zeliang. All rights reserved.</p>
           {/* Developer credit */}
-          <p className="font-poppins text-slate-600 text-xs tracking-wider">Developed by<br />          <span className="text-violet-500 font-semibold">NITI Technologies</span></p>
+          <p className="font-poppins text-[var(--text-muted)] text-xs tracking-wider">Developed by<br />          <span className="text-[var(--accent-gold)] font-semibold">NITI Technologies</span></p>
         </div>
       </footer>
 
-      <a href="#home" className={`fixed bottom-8 right-8 w-12 h-12 bg-violet-500 text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-500 z-40 ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
+      <a href="#home" className={`fixed bottom-8 right-8 w-12 h-12 bg-[var(--accent-gold)] text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-500 z-40 ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
         <ChevronRight size={24} className="-rotate-90" />
       </a>
     </div>

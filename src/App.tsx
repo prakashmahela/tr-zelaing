@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'beige');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSubpage, setActiveSubpage] = useState<string | null>(null);
@@ -997,40 +997,21 @@ export default function App() {
               </div>
             </div>
             <div className="max-w-5xl w-full reveal-on-scroll">
-              <div style={{
-                background: 'linear-gradient(135deg, #0d1117 0%, #111827 100%)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: '20px',
-                padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                  <div style={{ width: '3px', height: '24px', background: 'var(--accent-gold)', borderRadius: '2px', flexShrink: 0 }} />
-                  <h3 className="font-anton tracking-widest uppercase" style={{ fontSize: 'clamp(0.85rem, 2.5vw, 1.1rem)', color: '#e2e8f0', margin: 0 }}>Key Information</h3>
-                </div>
-                <ul className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="premium-3d-card p-8" style={{ border:"1px solid var(--border)", boxShadow:"0 20px 60px var(--shadow)" }}>
+                <h3 className="font-anton text-2xl mb-8 pb-4 text-center text-[var(--text-primary)] border-b" style={{ borderColor:"var(--border)" }}>Key Information</h3>
+                <ul className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                   {[
-                    { icon: <Calendar size={16} />, label: 'Born', value: 'February 21, 1952', id: 'info-born' },
-                    { icon: <MapPin size={16} />, label: 'Constituency', value: 'Peren, Nagaland', id: 'info-constituency' },
-                    { icon: <Shield size={16} />, label: 'Party', value: "Naga People's Front", id: 'info-party' },
-                    { icon: <GraduationCap size={16} />, label: 'Education', value: 'B.A. Kohima College', id: 'info-education' },
+                    { icon: <Calendar size={24} />, label: 'Born', value: 'February 21, 1952', id: 'info-born' },
+                    { icon: <MapPin size={24} />, label: 'Constituency', value: 'Peren, Nagaland', id: 'info-constituency' },
+                    { icon: <Shield size={24} />, label: 'Party', value: 'NPF', id: 'info-party' },
+                    { icon: <GraduationCap size={24} />, label: 'Education', value: 'B.A. Kohima College', id: 'info-education' },
                   ].map((item, i) => (
-                    <li key={i} className="cursor-pointer" onClick={() => openSubpage(item.id)} style={{
-                      padding: 'clamp(0.75rem, 2vw, 1rem)',
-                      borderRadius: '10px',
-                      background: 'rgba(255,255,255,0.04)',
-                      border: '1px solid rgba(255,255,255,0.06)',
-                      transition: 'all 0.3s ease',
-                      listStyle: 'none',
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.3)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)'; }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
-                        <span style={{ color: 'var(--accent-gold)', opacity: 0.8, flexShrink: 0 }}>{item.icon}</span>
-                        <p className="font-poppins uppercase tracking-widest" style={{ fontSize: '0.55rem', color: 'rgba(148,163,184,0.65)', fontWeight: 700, margin: 0 }}>{item.label}</p>
+                    <li key={i} className="flex items-center gap-2 cursor-pointer group premium-3d-card p-2" onClick={() => openSubpage(item.id)}>
+                      <div className="w-7 h-7 bg-[var(--bg-accent)] rounded-lg flex items-center justify-center text-[var(--accent-gold)] shrink-0 group-hover:bg-[var(--accent-gold)] group-hover:text-white transition-colors icon-accent" style={{ fontSize: '14px' }}>{item.icon}</div>
+                      <div className="flex items-baseline gap-1 min-w-0">
+                        <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-bold font-poppins shrink-0">{item.label}:</p>
+                        <p className="text-xs font-semibold text-[var(--text-primary)] font-poppins truncate group-hover:text-[var(--accent-gold)] transition-colors">{item.value}</p>
                       </div>
-                      <p className="font-poppins" style={{ fontSize: 'clamp(0.7rem, 2vw, 0.82rem)', color: '#e2e8f0', fontWeight: 600, margin: 0, lineHeight: 1.35 }}>{item.value}</p>
                     </li>
                   ))}
                 </ul>
@@ -1039,16 +1020,16 @@ export default function App() {
             <div className="w-full reveal-on-scroll">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
-                  { target: 2, suffix: 'x', label: 'Chief\nMinister' },
-                  { target: 9, suffix: 'x', label: 'Elected\nRepresentative' },
-                  { target: 1, suffix: '', label: 'Rajya\nSabha MP' },
-                  { target: 40, suffix: '+', label: 'Years in\nPolitics' },
+                  { target: 2, suffix: 'x', label: 'Chief Minister' },
+                  { target: 9, suffix: 'x', label: 'Elected Representative' },
+                  { target: 1, suffix: '', label: 'Rajya Sabha MP' },
+                  { target: 40, suffix: '+', label: 'Years in Politics' },
                 ].map((s, i) => (
-                  <div key={i} className="premium-3d-card" style={{ padding: 'clamp(1rem, 3vw, 1.5rem) 0.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', textAlign: 'center', minHeight: '140px' }}>
-                    <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(255,255,255,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid rgba(255,255,255,0.4)', flexShrink: 0 }}>
-                      <span className="font-anton" style={{ fontSize: 'clamp(1.1rem, 3.5vw, 1.5rem)', lineHeight: 1, color: 'var(--card-accent-dark)' }}>{s.target}{s.suffix}</span>
+                  <div key={i} className="text-center p-6 premium-3d-card">
+                    <div className="w-16 h-16 rounded-full bg-white/25 flex items-center justify-center mx-auto mb-4 border border-white/40 icon-accent">
+                      <span className="font-anton text-2xl" style={{ color: 'var(--card-accent-dark)' }}>{s.target}{s.suffix}</span>
                     </div>
-                    <p className="font-poppins uppercase tracking-widest font-bold" style={{ fontSize: 'clamp(0.55rem, 1.8vw, 0.65rem)', margin: 0, lineHeight: 1.4, whiteSpace: 'pre-line' }}>{s.label}</p>
+                    <p className="text-xs uppercase tracking-widest font-bold font-poppins">{s.label}</p>
                   </div>
                 ))}
               </div>
@@ -1333,14 +1314,14 @@ export default function App() {
               { label:'Naga Resolution', sub:'Lifelong advocate', id:'achievement-naga', num:'☮' },
               { label:'NE Development', sub:'Champion of the region', id:'achievement-ne', num:'NE' },
             ].map((item, index) => (
-              <div key={index} onClick={() => openSubpage(item.id)} className="reveal-on-scroll reveal-zoom cursor-pointer premium-3d-card text-center" style={{ padding: 'clamp(1rem, 3vw, 2rem)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+              <div key={index} onClick={() => openSubpage(item.id)} className="reveal-on-scroll reveal-zoom cursor-pointer premium-3d-card p-8 text-center">
                 {/* Number badge */}
-                <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '1.5px solid rgba(255,255,255,0.4)' }}>
-                  <span className="font-anton" style={{ fontSize: 'clamp(0.85rem, 2.5vw, 1.1rem)', color: 'var(--card-accent-dark)', lineHeight: 1 }}>{item.num}</span>
+                <div className="w-14 h-14 rounded-full bg-white/25 flex items-center justify-center mx-auto mb-4 border border-white/40 icon-accent">
+                  <span className="font-anton text-lg" style={{ color: 'var(--card-accent-dark)' }}>{item.num}</span>
                 </div>
-                <h4 className="font-anton tracking-wider uppercase" style={{ fontSize: 'clamp(0.7rem, 2.2vw, 1rem)', lineHeight: 1.25, margin: '0.25rem 0', wordBreak: 'break-word', hyphens: 'auto' }}>{item.label}</h4>
-                <p className="font-poppins opacity-90" style={{ fontSize: 'clamp(0.6rem, 1.8vw, 0.75rem)', lineHeight: 1.4, margin: 0 }}>{item.sub}</p>
-                <p className="font-poppins tracking-widest uppercase" style={{ fontSize: '0.55rem', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '0.6rem', marginTop: '0.25rem', width: '100%' }}>TAP TO EXPLORE →</p>
+                <h4 className="font-anton text-lg mb-1 tracking-wider uppercase">{item.label}</h4>
+                <p className="font-poppins text-xs opacity-90 mb-4">{item.sub}</p>
+                <p className="font-poppins text-[10px] tracking-widest border-t border-white/20 pt-4 uppercase hover:underline">TAP TO EXPLORE →</p>
               </div>
             ))}
           </div>

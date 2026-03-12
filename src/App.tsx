@@ -450,13 +450,13 @@ export default function App() {
       {activeSubpage === 'contact' && (<SubPage title="Contact and Office Details"><section><SH t="The Office of the Deputy Chief Minister" /><p>The primary office of T.R. Zeliang, the Deputy Chief Minister of Nagaland, is located in the state capital, Kohima, at Old Minister's Hill. This office serves as the central hub for administrative coordination and public engagement.</p></section><section><SH t="Digital Outreach: Modernizing Citizen Engagement" /><p>Recognizing the importance of technology in modern governance, the office of the Deputy Chief Minister has a strong digital presence. This official portal is part of a broader digital outreach strategy aimed at making information more accessible to everyone, regardless of their location.</p></section></SubPage>)}
 
       {/* ═══════════════════════ NAVBAR ═══════════════════════ */}
-      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 flex justify-center ${isScrolled ? 'pt-4' : 'pt-0'}`} style={{ overflow: 'hidden' }}>
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 flex justify-center ${isScrolled ? 'pt-4' : 'pt-0'}`} style={{ maxWidth: '100vw' }}>
         <div className={`transition-all duration-500 flex justify-between items-center ${isScrolled ? 'w-[92%] max-w-6xl px-6 py-3 rounded-2xl bg-[var(--nav-bg)] backdrop-blur-xl shadow-[0_20px_50px_var(--shadow)] border border-[var(--border)] nav-3d-effect' : 'w-full max-w-7xl px-4 py-6 bg-transparent'}`}>
           <a href="#home" className="flex items-center gap-1 group flex-shrink-0">
             <span className="font-anton text-xl tracking-tighter text-[var(--text-primary)]">TR ZELIANG</span>
             <span className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 group-hover:scale-150 transition-transform duration-300"></span>
           </a>
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden xl:flex items-center gap-6">
             {navLinks.map((link) => (
               <button key={link.name} onClick={() => openSubpage(link.id, false)} className="font-poppins text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-gold)] transition-all duration-300 tracking-wide hover:-translate-y-1 hover:scale-110 active:scale-95 cursor-pointer">
                 {link.name}
@@ -466,16 +466,20 @@ export default function App() {
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
           </div>
-          <div className="flex items-center gap-3 lg:hidden">
-            <button onClick={toggleTheme} className="p-2 rounded-full transition-all duration-300 hover:bg-black/10 text-[var(--text-primary)] cursor-pointer" aria-label="Toggle Theme">
+          <div className="flex items-center gap-2 xl:hidden" style={{ display: 'flex' }}>
+            <button onClick={toggleTheme} style={{ padding: '8px', borderRadius: '50%', background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }} aria-label="Toggle Theme">
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <button className="text-[var(--text-primary)] p-2 hover:bg-violet-900/40 rounded-lg transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <button
+              style={{ padding: '8px', borderRadius: '8px', background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle Menu"
+            >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
-        <div className={`lg:hidden absolute top-full left-1/2 -translate-x-1/2 w-[92%] mt-2 bg-[var(--bg-secondary)] backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--border)] transition-all duration-500 overflow-hidden ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`xl:hidden absolute top-full left-1/2 -translate-x-1/2 w-[92%] mt-2 bg-[var(--bg-secondary)] backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--border)] transition-all duration-500 overflow-hidden ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="flex flex-col p-6 gap-4">
             {navLinks.map((link) => (
               <button key={link.name} onClick={() => { openSubpage(link.id, false); setIsMenuOpen(false); }} className="font-poppins text-lg font-medium text-[var(--text-primary)] border-b border-[var(--border)] pb-2 hover:text-[var(--accent-gold)] transition-colors text-left w-full cursor-pointer">

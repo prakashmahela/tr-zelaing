@@ -3,15 +3,14 @@
 @theme {
   --font-anton: "Anton", sans-serif;
   --font-poppins: "Poppins", sans-serif;
-  --color-navy: #0284c7; /* Vibrant Sky Blue */
+  --color-navy: #0284c7;
   --color-gold: #c9a84c;
-  --color-charcoal: #075985; /* Deep Sky Charcoal */
+  --color-charcoal: #075985;
   --color-body: #475569;
   --color-soft-blue: #e0f2fe;
 }
 
 :root {
-  /* Default Dark Mode Variables */
   --bg-primary: #07030f;
   --bg-secondary: #1a0d35;
   --bg-accent: #0f0720;
@@ -45,6 +44,14 @@
 @layer base {
   * {
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    box-sizing: border-box;
+  }
+
+  /* CRITICAL FIX: prevent horizontal scroll on mobile */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
   }
 
   body {
@@ -53,6 +60,7 @@
     color: var(--text-secondary);
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -60,7 +68,6 @@
     color: var(--text-primary);
   }
 
-  /* Noise Texture Overlay */
   body::before {
     content: "";
     position: fixed;
@@ -78,6 +85,7 @@
 @layer components {
   .glass-nav {
     @apply fixed top-0 left-0 w-full z-50 transition-all duration-500;
+    overflow: hidden;
   }
 
   .nav-3d-effect {
@@ -142,50 +150,29 @@
     @apply rounded-2xl transition-all duration-500 backdrop-blur-sm;
   }
 
-  /* ══════════════════════════════════════════════════════
-     PREMIUM CARD — NUCLEAR TEXT VISIBILITY FIX
-     Forces all text visible regardless of Tailwind utilities,
-     inline styles, or inherited opacity/color transparency.
-  ══════════════════════════════════════════════════════ */
-
   .premium-card,
   .premium-card * {
     opacity: 1 !important;
     --tw-text-opacity: 1 !important;
   }
 
-  .premium-card {
-    color: #e2e8f0 !important;
-  }
-
+  .premium-card { color: #e2e8f0 !important; }
   .premium-card h1, .premium-card h2,
   .premium-card h3, .premium-card h4,
-  .premium-card h5, .premium-card h6 {
-    color: #ffffff !important;
-    text-shadow: none !important;
-  }
-
+  .premium-card h5, .premium-card h6 { color: #ffffff !important; text-shadow: none !important; }
   .premium-card p, .premium-card span,
   .premium-card div, .premium-card li,
   .premium-card label, .premium-card strong,
   .premium-card small, .premium-card a,
-  .premium-card td, .premium-card th {
-    color: #e2e8f0 !important;
-  }
+  .premium-card td, .premium-card th { color: #e2e8f0 !important; }
 
-  [data-theme="beige"] .premium-card {
-    color: #1a1410 !important;
-  }
-
+  [data-theme="beige"] .premium-card { color: #1a1410 !important; }
   [data-theme="beige"] .premium-card h1,
   [data-theme="beige"] .premium-card h2,
   [data-theme="beige"] .premium-card h3,
   [data-theme="beige"] .premium-card h4,
   [data-theme="beige"] .premium-card h5,
-  [data-theme="beige"] .premium-card h6 {
-    color: #0a0806 !important;
-  }
-
+  [data-theme="beige"] .premium-card h6 { color: #0a0806 !important; }
   [data-theme="beige"] .premium-card p,
   [data-theme="beige"] .premium-card span,
   [data-theme="beige"] .premium-card div,
@@ -195,9 +182,7 @@
   [data-theme="beige"] .premium-card small,
   [data-theme="beige"] .premium-card a,
   [data-theme="beige"] .premium-card td,
-  [data-theme="beige"] .premium-card th {
-    color: #1a1410 !important;
-  }
+  [data-theme="beige"] .premium-card th { color: #1a1410 !important; }
 
   .btn-primary {
     @apply text-white font-anton px-8 py-4 rounded-lg transition-all duration-300 uppercase tracking-widest flex items-center justify-center gap-2 shadow-md hover:-translate-y-1 active:translate-y-0 active:scale-95;
@@ -230,7 +215,6 @@
   }
 }
 
-/* Custom Utilities */
 .text-clamp-hero {
   font-size: clamp(2.5rem, 8vw, 6rem);
 }
@@ -239,7 +223,6 @@
   font-size: clamp(2rem, 5vw, 3.5rem);
 }
 
-/* Timeline specific */
 .timeline-line {
   @apply absolute left-1/2 top-0 w-0.5 h-full bg-sky-200 -translate-x-1/2 hidden md:block;
 }
@@ -247,92 +230,39 @@
 .timeline-dot {
   @apply absolute left-1/2 w-4 h-4 bg-sky-400 rounded-full -translate-x-1/2 z-10 hidden md:block ring-4 ring-white;
 }
-/* ═══════════════════════════════════════════════════════════════════════
-   ✦ CINEMATIC REVEAL ANIMATION SYSTEM ✦
-   
-   HOW TO USE:
-   1. Add  data-reveal="[type]"  to any section or card wrapper
-   2. Optionally add  data-stagger  to grid containers for cascading children
-   3. Drop the <script> block at the bottom of this file before </body>
-   
-   SECTION TYPES:
-     data-reveal="bio"         — Biographical / profile cards
-     data-reveal="vision"      — Vision / timeline sections  
-     data-reveal="initiatives" — Initiatives / feature cards grid
-     data-reveal="achievements"— Stats / numbers / milestones
-     data-reveal="office"      — Office / team / gallery
-     data-reveal="contact"     — Contact / CTA sections
-     data-reveal="card"        — Individual cards (used by stagger system)
-═══════════════════════════════════════════════════════════════════════ */
 
-
-/* ─── BASE: everything hidden until triggered ─── */
 [data-reveal],
 [data-stagger] > * {
   opacity: 0;
   will-change: opacity, transform, filter, clip-path;
 }
 
-[data-reveal].revealed {
-  opacity: 1;
-}
+[data-reveal].revealed { opacity: 1; }
 
-/* ─────────────────────────────────────────────────────────────────────
-   1. BIO / PROFILE  —  "Vault Door": slides in from the left like a
-      heavy door swinging open, with a slight depth warp on entry.
-      Feels authoritative and weighty.
-───────────────────────────────────────────────────────────────────── */
 @keyframes vaultOpen {
   0%   { opacity: 0; transform: perspective(1200px) rotateY(-22deg) translateX(-60px) scale(0.94); filter: blur(4px); }
   55%  { opacity: 1; filter: blur(0px); }
   75%  { transform: perspective(1200px) rotateY(3deg) translateX(6px) scale(1.01); }
   100% { transform: perspective(1200px) rotateY(0deg) translateX(0)   scale(1); }
 }
+[data-reveal="bio"].revealed { animation: vaultOpen 1.1s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-[data-reveal="bio"].revealed {
-  animation: vaultOpen 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   2. VISION / TIMELINE  —  "Ink Bleed": content materialises as if
-      ink spreading through paper — blur dissolves outward from center,
-      paired with a gentle vertical drift.
-───────────────────────────────────────────────────────────────────── */
 @keyframes inkBleed {
   0%   { opacity: 0; transform: translateY(50px) scaleX(0.96); filter: blur(14px) saturate(0); }
   40%  { filter: blur(4px)  saturate(0.5); }
   70%  { filter: blur(0px)  saturate(1.1); transform: translateY(-4px) scaleX(1.005); }
   100% { opacity: 1; transform: translateY(0) scaleX(1); filter: blur(0px) saturate(1); }
 }
+[data-reveal="vision"].revealed { animation: inkBleed 1.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-[data-reveal="vision"].revealed {
-  animation: inkBleed 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   3. INITIATIVES / CARDS GRID  —  "Fracture Rise": section splits in
-      from a diagonal, each half rising like tectonic plates meeting.
-      Uses clip-path animation for a dramatic editorial feel.
-───────────────────────────────────────────────────────────────────── */
 @keyframes fractureRise {
   0%   { opacity: 0; clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); transform: translateY(30px); }
   30%  { opacity: 1; }
   70%  { clip-path: polygon(0 0%, 100% 8%, 100% 100%, 0 100%); transform: translateY(-4px); }
   100% { clip-path: polygon(0 0%, 100% 0%, 100% 100%, 0 100%); transform: translateY(0); }
 }
+[data-reveal="initiatives"].revealed { animation: fractureRise 1.0s cubic-bezier(0.77, 0, 0.175, 1) both; }
 
-[data-reveal="initiatives"].revealed {
-  animation: fractureRise 1.0s cubic-bezier(0.77, 0, 0.175, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   4. ACHIEVEMENTS / STATS  —  "Shockwave": section explodes in from
-      a tiny compressed point, expanding with a ripple ring effect.
-      Perfect for dramatic stat reveals.
-───────────────────────────────────────────────────────────────────── */
 @keyframes shockwave {
   0%   { opacity: 0; transform: scale(0.6) translateY(20px); filter: brightness(2.5) blur(8px); }
   35%  { opacity: 1; filter: brightness(1.4) blur(2px); }
@@ -340,17 +270,8 @@
   80%  { transform: scale(0.985) translateY(2px); }
   100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1) blur(0px); }
 }
+[data-reveal="achievements"].revealed { animation: shockwave 0.95s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 
-[data-reveal="achievements"].revealed {
-  animation: shockwave 0.95s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   5. OFFICE / GALLERY  —  "Film Roll": section enters as if a film
-      reel is being fed through — slight horizontal smear and exposure
-      flash, then settles into place.
-───────────────────────────────────────────────────────────────────── */
 @keyframes filmRoll {
   0%   { opacity: 0; transform: translateX(80px) skewX(-8deg) scaleY(0.92); filter: contrast(2.5) brightness(1.8) blur(3px); }
   25%  { filter: contrast(1.3) brightness(1.2) blur(1px); }
@@ -358,17 +279,8 @@
   75%  { transform: translateX(3px) skewX(-0.5deg); }
   100% { opacity: 1; transform: translateX(0) skewX(0) scaleY(1); filter: none; }
 }
+[data-reveal="office"].revealed { animation: filmRoll 1.15s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-[data-reveal="office"].revealed {
-  animation: filmRoll 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   6. CONTACT / CTA  —  "Aurora Surge": section rises from below with
-      a radiant glow that pulses once then settles — like an aurora
-      igniting. Warm, inviting, unforgettable.
-───────────────────────────────────────────────────────────────────── */
 @keyframes auroraSurge {
   0%   { opacity: 0; transform: translateY(70px) scale(0.93); filter: hue-rotate(30deg) brightness(0.4) blur(10px); }
   30%  { opacity: 0.8; filter: hue-rotate(15deg) brightness(1.6) blur(3px); transform: translateY(10px) scale(1.02); }
@@ -376,17 +288,8 @@
   80%  { filter: brightness(1.02); transform: translateY(2px) scale(0.999); }
   100% { opacity: 1; transform: translateY(0) scale(1); filter: none; }
 }
+[data-reveal="contact"].revealed { animation: auroraSurge 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-[data-reveal="contact"].revealed {
-  animation: auroraSurge 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   7. INDIVIDUAL CARD  —  "Holographic Lift": each card flips up from
-      a flat-on-table position with a metallic shimmer, landing with
-      a soft spring bounce.
-───────────────────────────────────────────────────────────────────── */
 @keyframes holoLift {
   0%   { opacity: 0; transform: perspective(800px) rotateX(40deg) translateY(30px) scale(0.92); filter: blur(6px) brightness(0.6); }
   45%  { filter: blur(1px) brightness(1.2); }
@@ -394,17 +297,8 @@
   85%  { transform: perspective(800px) rotateX(2deg) translateY(2px) scale(0.998); }
   100% { opacity: 1; transform: perspective(800px) rotateX(0deg) translateY(0) scale(1); filter: none; }
 }
+[data-reveal="card"].revealed { animation: holoLift 0.8s cubic-bezier(0.34, 1.3, 0.64, 1) both; }
 
-[data-reveal="card"].revealed {
-  animation: holoLift 0.8s cubic-bezier(0.34, 1.3, 0.64, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   ✦ STAGGER SYSTEM  —  "Cascade"
-   Add data-stagger to any grid/list. Children fan in sequentially
-   with the holoLift animation, each delayed by 90ms.
-───────────────────────────────────────────────────────────────────── */
 [data-stagger].revealed > *:nth-child(1)  { animation: holoLift 0.75s cubic-bezier(0.34,1.3,0.64,1) 0.00s both; }
 [data-stagger].revealed > *:nth-child(2)  { animation: holoLift 0.75s cubic-bezier(0.34,1.3,0.64,1) 0.09s both; }
 [data-stagger].revealed > *:nth-child(3)  { animation: holoLift 0.75s cubic-bezier(0.34,1.3,0.64,1) 0.18s both; }
@@ -415,13 +309,6 @@
 [data-stagger].revealed > *:nth-child(8)  { animation: holoLift 0.75s cubic-bezier(0.34,1.3,0.64,1) 0.60s both; }
 [data-stagger].revealed > *:nth-child(n+9){ animation: holoLift 0.75s cubic-bezier(0.34,1.3,0.64,1) 0.65s both; }
 
-
-/* ─────────────────────────────────────────────────────────────────────
-   ✦ HEADING WORD-BY-WORD REVEAL  —  "Split Type"
-   Add data-reveal-words to any heading.
-   JS will wrap each word in <span class="word-wrap">, each gets
-   its own staggered clip-path reveal.
-───────────────────────────────────────────────────────────────────── */
 [data-reveal-words] .word-wrap {
   display: inline-block;
   overflow: hidden;
@@ -433,50 +320,19 @@
   display: inline-block;
   transform: translateY(110%) skewY(8deg);
   opacity: 0;
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.5s ease;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
 }
 
-[data-reveal-words].revealed .word-inner {
-  transform: translateY(0) skewY(0deg);
-  opacity: 1;
-}
+[data-reveal-words].revealed .word-inner { transform: translateY(0) skewY(0deg); opacity: 1; }
 
-[data-reveal-words].revealed .word-inner:nth-child(1)  { transition-delay: 0.05s; }
-[data-reveal-words].revealed .word-inner:nth-child(2)  { transition-delay: 0.12s; }
-[data-reveal-words].revealed .word-inner:nth-child(3)  { transition-delay: 0.19s; }
-[data-reveal-words].revealed .word-inner:nth-child(4)  { transition-delay: 0.26s; }
-[data-reveal-words].revealed .word-inner:nth-child(5)  { transition-delay: 0.33s; }
-[data-reveal-words].revealed .word-inner:nth-child(6)  { transition-delay: 0.40s; }
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   ✦ SECTION DIVIDER LINE DRAW  —  "Strike"
-   Add data-line-draw to any <hr> or divider element.
-   It draws itself left-to-right on scroll entry.
-───────────────────────────────────────────────────────────────────── */
 @keyframes lineDraw {
   from { transform: scaleX(0); transform-origin: left center; }
   to   { transform: scaleX(1); transform-origin: left center; }
 }
 
-[data-line-draw] {
-  transform: scaleX(0);
-  transform-origin: left center;
-  opacity: 0;
-}
+[data-line-draw] { transform: scaleX(0); transform-origin: left center; opacity: 0; }
+[data-line-draw].revealed { opacity: 1; animation: lineDraw 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s both; }
 
-[data-line-draw].revealed {
-  opacity: 1;
-  animation: lineDraw 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   ✦ NUMBER COUNTER SHIMMER  —  "Count Up Glow"
-   Add data-counter to stat numbers.
-   JS handles the count-up; CSS adds the entrance shimmer.
-───────────────────────────────────────────────────────────────────── */
 @keyframes counterGlow {
   0%   { opacity: 0; transform: scale(0.5) translateY(20px); filter: blur(8px) brightness(3); }
   50%  { filter: blur(0px) brightness(1.5); transform: scale(1.1) translateY(-4px); }
@@ -484,26 +340,15 @@
   100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
 }
 
-[data-counter] {
-  opacity: 0;
-}
+[data-counter] { opacity: 0; }
+[data-counter].revealed { animation: counterGlow 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 
-[data-counter].revealed {
-  animation: counterGlow 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   ✦ LEGACY SUPPORT (keeps old .reveal-on-scroll working)
-───────────────────────────────────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-up {
-  animation: fadeUp 0.8s ease-out forwards;
-}
+.animate-fade-up { animation: fadeUp 0.8s ease-out forwards; }
 
 .reveal-on-scroll {
   opacity: 0;
@@ -511,66 +356,7 @@
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.reveal-on-scroll.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────
-   ✦ WIRING SCRIPT — paste before </body> in your HTML/JSX:
-
-<script>
-(function() {
-  // 1. Section + card reveals
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('revealed');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll(
-    '[data-reveal], [data-stagger], [data-line-draw], [data-counter]'
-  ).forEach(el => io.observe(el));
-
-  // 2. Word-by-word heading splits
-  document.querySelectorAll('[data-reveal-words]').forEach(el => {
-    const words = el.textContent.trim().split(/\s+/);
-    el.innerHTML = words.map((w, i) =>
-      `<span class="word-wrap"><span class="word-inner" style="transition-delay:${0.05 + i * 0.07}s">${w}</span></span>`
-    ).join(' ');
-    io.observe(el);
-  });
-
-  // 3. Count-up numbers
-  document.querySelectorAll('[data-counter]').forEach(el => {
-    const target = parseFloat(el.textContent);
-    const suffix = el.textContent.replace(/[\d.]/g, '');
-    const cio = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      el.classList.add('revealed');
-      let start = 0, dur = 1800, startTime = null;
-      function step(ts) {
-        if (!startTime) startTime = ts;
-        const p = Math.min((ts - startTime) / dur, 1);
-        const ease = 1 - Math.pow(1 - p, 4);
-        el.textContent = (Number.isInteger(target)
-          ? Math.round(ease * target)
-          : (ease * target).toFixed(1)) + suffix;
-        if (p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-      cio.unobserve(el);
-    }, { threshold: 0.5 });
-    cio.observe(el);
-  });
-})();
-</script>
-───────────────────────────────────────────────────────────────────── */
-
+.reveal-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
 /* ═══════════════════════════════════════════════════════════════
    PREMIUM 3D VIVID CARD SYSTEM
@@ -589,18 +375,8 @@
   background-clip: padding-box;
 }
 
-/* Top-left glass shine */
-.premium-3d-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 0; height: 0;
-  background: none;
-  pointer-events: none;
-  z-index: 1;
-}
+.premium-3d-card::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; background: none; pointer-events: none; z-index: 1; }
 
-/* Bottom-right depth + extra shine strip */
 .premium-3d-card::after {
   content: '';
   position: absolute;
@@ -615,7 +391,6 @@
   z-index: 1;
 }
 
-/* Hover: pop up with spring bounce */
 .premium-3d-card:hover {
   transform: translateY(-10px) scale(1.03) !important;
   box-shadow:
@@ -626,38 +401,20 @@
   border-color: rgba(255,255,255,0.75) !important;
 }
 
-.premium-3d-card {
-  background: var(--card-grad) !important;
+.premium-3d-card { background: var(--card-grad) !important; }
+
+.premium-3d-card h1, .premium-3d-card h2, .premium-3d-card h3,
+.premium-3d-card h4, .premium-3d-card h5, .premium-3d-card h6 {
+  color: #ffffff !important; text-shadow: 0 1px 3px rgba(0,0,0,0.25) !important; opacity: 1 !important;
 }
 
-/* ── Text on vivid cards: ALWAYS visible, no hover required ── */
-.premium-3d-card h1,
-.premium-3d-card h2,
-.premium-3d-card h3,
-.premium-3d-card h4,
-.premium-3d-card h5,
-.premium-3d-card h6 {
-  color: #ffffff !important;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.25) !important;
-  opacity: 1 !important;
+.premium-3d-card p, .premium-3d-card span, .premium-3d-card li,
+.premium-3d-card div, .premium-3d-card label, .premium-3d-card strong, .premium-3d-card a {
+  color: rgba(255,255,255,0.95) !important; opacity: 1 !important;
 }
 
-.premium-3d-card p,
-.premium-3d-card span,
-.premium-3d-card li,
-.premium-3d-card div,
-.premium-3d-card label,
-.premium-3d-card strong,
-.premium-3d-card a {
-  color: rgba(255,255,255,0.95) !important;
-  opacity: 1 !important;
-}
-
-.premium-3d-card .text-muted,
-.premium-3d-card .text-dark-muted,
-.premium-3d-card p.text-xs {
-  color: rgba(255,255,255,0.80) !important;
-  opacity: 1 !important;
+.premium-3d-card .text-muted, .premium-3d-card .text-dark-muted, .premium-3d-card p.text-xs {
+  color: rgba(255,255,255,0.80) !important; opacity: 1 !important;
 }
 
 .premium-3d-card .icon-accent {
@@ -667,16 +424,8 @@
   opacity: 1 !important;
 }
 
-.premium-3d-card .icon-accent span {
-  color: #ffffff !important;
-  opacity: 1 !important;
-}
-
-/* Force visibility on any element that may have inherited low opacity */
-.premium-3d-card * {
-  opacity: 1 !important;
-}
-
+.premium-3d-card .icon-accent span { color: #ffffff !important; opacity: 1 !important; }
+.premium-3d-card * { opacity: 1 !important; }
 
 /* ═══════════════════════════════════════════════════════════════
    8 JEWEL COLOR PALETTE
@@ -684,30 +433,22 @@
 :root {
   --c1-grad: linear-gradient(145deg, #0a2472, #1e4de0);
   --c1-acc:  #60a5fa;
-
   --c2-grad: linear-gradient(145deg, #7f0000, #dc2626);
   --c2-acc:  #fca5a5;
-
   --c3-grad: linear-gradient(145deg, #064e3b, #059669);
   --c3-acc:  #6ee7b7;
-
   --c4-grad: linear-gradient(145deg, #2e1065, #7c3aed);
   --c4-acc:  #c4b5fd;
-
   --c5-grad: linear-gradient(145deg, #0c4a6e, #0891b2);
   --c5-acc:  #67e8f9;
-
   --c6-grad: linear-gradient(145deg, #78350f, #d97706);
   --c6-acc:  #fde68a;
-
   --c7-grad: linear-gradient(145deg, #500724, #be185d);
   --c7-acc:  #f9a8d4;
-
   --c8-grad: linear-gradient(145deg, #0f172a, #334155);
   --c8-acc:  #94a3b8;
 }
 
-/* Section 1 (About) — starts at Sapphire */
 .section-1 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c1-grad); --card-accent-dark: var(--c1-acc); }
 .section-1 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c2-grad); --card-accent-dark: var(--c2-acc); }
 .section-1 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c3-grad); --card-accent-dark: var(--c3-acc); }
@@ -717,7 +458,6 @@
 .section-1 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c7-grad); --card-accent-dark: var(--c7-acc); }
 .section-1 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c8-grad); --card-accent-dark: var(--c8-acc); }
 
-/* Section 2 (Vision) — offset by 4 */
 .section-2 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c5-grad); --card-accent-dark: var(--c5-acc); }
 .section-2 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c6-grad); --card-accent-dark: var(--c6-acc); }
 .section-2 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c7-grad); --card-accent-dark: var(--c7-acc); }
@@ -727,7 +467,6 @@
 .section-2 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c3-grad); --card-accent-dark: var(--c3-acc); }
 .section-2 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c4-grad); --card-accent-dark: var(--c4-acc); }
 
-/* Section 3 (Initiatives) — offset by 2 */
 .section-3 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c3-grad); --card-accent-dark: var(--c3-acc); }
 .section-3 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c4-grad); --card-accent-dark: var(--c4-acc); }
 .section-3 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c5-grad); --card-accent-dark: var(--c5-acc); }
@@ -737,7 +476,6 @@
 .section-3 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c1-grad); --card-accent-dark: var(--c1-acc); }
 .section-3 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c2-grad); --card-accent-dark: var(--c2-acc); }
 
-/* Section 4 (Achievements) — offset by 6 */
 .section-4 .premium-3d-card:nth-child(8n+1) { --card-grad: var(--c7-grad); --card-accent-dark: var(--c7-acc); }
 .section-4 .premium-3d-card:nth-child(8n+2) { --card-grad: var(--c8-grad); --card-accent-dark: var(--c8-acc); }
 .section-4 .premium-3d-card:nth-child(8n+3) { --card-grad: var(--c1-grad); --card-accent-dark: var(--c1-acc); }
@@ -747,41 +485,16 @@
 .section-4 .premium-3d-card:nth-child(8n+7) { --card-grad: var(--c5-grad); --card-accent-dark: var(--c5-acc); }
 .section-4 .premium-3d-card:nth-child(8n+8) { --card-grad: var(--c6-grad); --card-accent-dark: var(--c6-acc); }
 
-/* Office section rows */
 .office-row-1 { --card-grad: var(--c1-grad) !important; --card-accent-dark: var(--c1-acc) !important; }
 .office-row-2 { --card-grad: var(--c4-grad) !important; --card-accent-dark: var(--c4-acc) !important; }
 .office-row-3 { --card-grad: var(--c2-grad) !important; --card-accent-dark: var(--c2-acc) !important; }
 
+[data-theme="beige"] * { --tw-text-opacity: 1 !important; }
+:root * { --tw-text-opacity: 1 !important; }
 
-/* ═══════════════════════════════════════════════════════════════
-   GLOBAL TEXT VISIBILITY — NUCLEAR OVERRIDE
-   Targets Tailwind's internal --tw-text-opacity variable which
-   powers opacity modifiers like text-slate-400/30.
-═══════════════════════════════════════════════════════════════ */
-
-/* Force Tailwind opacity variable to 1 everywhere */
-[data-theme="beige"] * {
-  --tw-text-opacity: 1 !important;
-}
-:root * {
-  --tw-text-opacity: 1 !important;
-}
-
-/* Kill any element-level opacity that makes text transparent */
 [data-theme="beige"] [class*="text-"],
-[data-theme="beige"] span,
-[data-theme="beige"] p,
-[data-theme="beige"] div,
-[data-theme="beige"] li,
-[data-theme="beige"] label,
-[data-theme="beige"] small,
-[data-theme="beige"] strong,
-[data-theme="beige"] td {
-  opacity: 1 !important;
-}
+[data-theme="beige"] span, [data-theme="beige"] p, [data-theme="beige"] div,
+[data-theme="beige"] li, [data-theme="beige"] label, [data-theme="beige"] small,
+[data-theme="beige"] strong, [data-theme="beige"] td { opacity: 1 !important; }
 
-/* Dark mode same */
-[class*="text-"],
-span, p, li, label, small, strong, td {
-  opacity: 1 !important;
-}
+[class*="text-"], span, p, li, label, small, strong, td { opacity: 1 !important; }
